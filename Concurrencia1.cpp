@@ -1,8 +1,9 @@
 #include <iostream>
 #include <string>
+#include <thread>
+#include <vector>
 using namespace std;
 #include "colores.cpp"
-
 
 void buscar(const string &texto){
     color(3);
@@ -10,6 +11,14 @@ void buscar(const string &texto){
     color(5);
     cout << "No lo encontre patrón" << endl;
 }
+
+void MyThread(){
+
+
+
+}
+
+
 
 int main(){
     char opcion;
@@ -52,4 +61,38 @@ int main(){
     } // FIN DEL SWITCH
 } // FIN DEL MAIN
 
+//Clase que se encarga de buscar a las palabras en un Hilo
+//Cualquier código de busqueda en un string debe añadirse aquí
+class Searchers {
+public:
 
+    //Es necesario asignar una ID al buscador, al igual que la palabra que va a buscar
+    Searchers(int MyID, char search) {
+        Identificador = MyID;
+        Buscar = search;
+
+        //Creamos el Hilo, Lo separamos del Main y guardamos el Hilo en una variable interna
+        //No olvidemos el usar delete SearchThread cuando terminemos
+        SearchThread = new thread(MyThread);
+        SearchThread->detach();
+    }
+
+    //Obtiene la ID del Buscador
+    int getID() {
+        return Identificador;
+    }
+
+    //Obtiene la palabra que el Buscador está buscando
+    char getWord() {
+        return Buscar;
+    }
+
+private:
+    int Identificador;
+    char Buscar;
+
+    //El objeto puntero no apunta a nada actualmente, existe para crear una variable de objeto "Vácia"
+    //Para luego ser asignada cúando se use el constructor Del Objeto
+    //No olvidemos cerrar esto cuando terminemos
+    thread *SearchThread = NULL;
+};
