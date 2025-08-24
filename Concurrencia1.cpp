@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <thread>
-#include <vector>
+
 using namespace std;
 #include "colores.cpp"
 
@@ -76,6 +76,14 @@ public:
         SearchThread = new thread(MyThread);
         SearchThread->detach();
     }
+    
+    //Destructor de la clase, cúando dejemos de necesitar este objeto, el puntero debe ser eliminado del mismo
+    //El destructor que se declara aquí ejecutará esta tarea antes de destruir el objeto
+    ~Searchers(){
+	
+	delete SearchThread;
+	
+	}
 
     //Obtiene la ID del Buscador
     int getID() {
