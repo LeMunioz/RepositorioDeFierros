@@ -1,9 +1,24 @@
 #include <iostream>
 #include <string>
 #include <thread>
+#include <vector>
+#include <sstream>
 
 using namespace std;
 #include "colores.cpp"
+
+//El archivo se estructura de la siguiente manera:
+// - Main
+// - Clases
+// - Funciones
+
+//Prototipos de Función
+//Si el orden de tus funciones evita que se puedan usar en otras clases o funciones, usar los prototipos permite
+//una identificación temprana de las mismas para que sea posible compilarlas sin errores
+void buscar(const string& texto);
+
+///////////////////////////////////////////////////FUNCIÓN PRINCIPAL///////////////////////////////////////////////////////////////////////////
+
 
 void buscar(const string &texto){
     color(3);
@@ -47,13 +62,15 @@ int main(){
             break;
         }
         case '2': {
-            color(14);
-            string textoEjemplo = 
-                "El veloz murciélago hindú comía feliz cardillo y kiwi. "
-                "La cigüeña tocaba el saxofón detrás del palenque de paja. "
-                "El veloz murciélago hindú comía feliz cardillo y kiwi. "
-                "La cigüeña tocaba el saxofón detrás del palenque de paja.";
-            buscar(textoEjemplo);    
+             string textoEjemplo =
+     			"El veloz murcielago hindu comia feliz cardillo y kiwi. "
+     			"La tortuga tocaba el saxofon detras del palenque de paja. "
+     			"El veloz murcielago hindu comia feliz cardillo y kiwi. "
+     			"La tortuga tocaba el saxofon detras del palenque de paja.";
+     		 color(14);
+			 cout << textoEjemplo << endl;
+
+			 buscar(textoEjemplo);
             break;
         }
         default:
@@ -61,46 +78,137 @@ int main(){
     } // FIN DEL SWITCH
 } // FIN DEL MAIN
 
+
+////////////////////////////////////////////////////////CLASES/////////////////////////////////////////////
+
 //Clase que se encarga de buscar a las palabras en un Hilo
 //Cualquier código de busqueda en un string debe añadirse aquí
+
 class Searchers {
 public:
 
     //Es necesario asignar una ID al buscador, al igual que la palabra que va a buscar
-    Searchers(int MyID, char search) {
+    Searchers(int MyID, string search, string Frase) {
         Identificador = MyID;
         Buscar = search;
+        MiFrase = Frase;
 
-        //Creamos el Hilo, Lo separamos del Main y guardamos el Hilo en una variable interna
-        //No olvidemos el usar delete SearchThread cuando terminemos
-        SearchThread = new thread(MyThread);
-        SearchThread->detach();
+        //Creamos el Hilo, y lo guardamos en una variable interna
+        //Lo que estamos haciendo en este constructor de objeto es obteniendo la dirección de memoria de la propia clase Searchers
+        //Entrando a declarar que estamos usando método MyThread cómo función propia
+        //Y que lo use cómo argumento para este objeto
+        SearchThread = thread(&Searchers::MyThread, this);
     }
-    
-    //Destructor de la clase, cúando dejemos de necesitar este objeto, el puntero debe ser eliminado del mismo
+
+    //Destructor de la clase, cuando ya no necesitemos el objeto, es necesario unir el hilo al main
     //El destructor que se declara aquí ejecutará esta tarea antes de destruir el objeto
-    ~Searchers(){
-	
-	delete SearchThread;
-	
-	}
+    //Sin esto, el compilador explota
+    ~Searchers() {
+        if (SearchThread.joinable()) {
 
-    //Obtiene la ID del Buscador
-    int getID() {
-        return Identificador;
+            SearchThread.join();
+        }
     }
 
-    //Obtiene la palabra que el Buscador está buscando
-    char getWord() {
-        return Buscar;
+    //El Hilo se ejecuta desde dentro de la clase para aprovechar las funciones de Busqueda de la misma
+    void MyThread() {
+
+        vector<string> PalabrasSeparadas = stringSplitter(MiFrase);
+        vector<int> indexHolder = findALLindex(PalabrasSeparadas, Buscar);
+        int coincidencias = 0;
+
+        for (string palabra : PalabrasSeparadas) {
+            
+
+            if (palabra == Buscar) {
+
+                
+                    cout << "\"" << Buscar << "\"" << " encontrada en posicion : " << indexHolder[coincidencias] << " por el Buscador " << Identificador << endl;
+                    coincidencias++;
+
+            }
+        }
+
+        if (coincidencias == 0) { 
+        	color(5);
+			cout << "Buscador " << Identificador << " Dice: No lo encontre patron" << endl; 
+		}
     }
+
+    //función que regresa un vector de números con los indices de la palabra a buscar
+    vector<int> findALLindex(vector<string>& MyVector, string match){
+        
+        vector<int> myIndexes;
+
+        for (int i = 0; i < MyVector.size(); i++) {
+            if (MyVector[i] == match) {
+                myIndexes.push_back(i + 1);
+            }
+        }
+    
+        return myIndexes;
+
+    }
+
+    //Función que regresa un vector de strings que contiene todas las palabras del texto de ejemplo
+    vector<string> stringSplitter(string text) {
+
+        vector<string> AllMyWords;
+
+        //objeto Stream String, se usa para hacer que un string se lea cómo input de usuario
+        istringstream MyText(text);
+
+        string mainString;
+
+        //guarda en mainString cada palabra que encuentre, sin contar los espacios
+        while (getline(MyText, mainString, ' ')) {
+            
+            AllMyWords.push_back(mainString);
+        
+        }
+        
+           
+
+        return AllMyWords;
+    }
+
 
 private:
     int Identificador;
-    char Buscar;
-
-    //El objeto puntero no apunta a nada actualmente, existe para crear una variable de objeto "Vácia"
-    //Para luego ser asignada cúando se use el constructor Del Objeto
-    //No olvidemos cerrar esto cuando terminemos
-    thread *SearchThread = NULL;
+    string Buscar;
+    string MiFrase;
+    thread SearchThread;
 };
+
+//////////////////////////////////////////////////////FUNCIONES/////////////////////////////////////////////////////////////
+
+void buscar(const string& texto) {
+
+    string palabra1;
+    string palabra2;
+    string palabra3;
+    string palabra4;
+    string palabra5;
+	
+	color(3);
+    cout << "Que palabras quieres buscar? Puedes buscar hasta 5 Palabras\n"
+        "Palabra 1:" << endl;
+    cin >> palabra1;
+    cout << "Palabra 2: " << endl;
+    cin >> palabra2;
+    cout << "Palabra 3: " << endl;
+    cin >> palabra3;
+    cout << "Palabra 4: " << endl;
+    cin >> palabra4;
+    cout << "Palabra 5: " << endl;
+    cin >> palabra5;
+
+    Searchers Buscador1(1, palabra1, texto);
+    Searchers Buscador2(2, palabra2, texto);
+    Searchers Buscador3(3, palabra3, texto);
+    Searchers Buscador4(4, palabra4, texto);
+    Searchers Buscador5(4, palabra5, texto);
+
+    //Actualmente la impresión a pantalla de los resultados se choca entre hilo
+    //Lo ideal sería obtener una tabla de palabras y coincidencias para imprimirla después de que los hilos hayan terminado de procesarse
+}
