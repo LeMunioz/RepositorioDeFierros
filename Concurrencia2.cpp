@@ -1,0 +1,146 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <thread>
+#include <mutex>
+#include <algorithm>
+#include <cctype>
+#include <chrono>
+#include "colores"
+
+using namespace std;
+
+mutex cout_mutex; // Mutex para sincronizar la salida
+
+// Funcion para convertir texto a minusculas
+string toLower(const string& str) {
+    string lowerStr = str;
+    transform(lowerStr.begin(), lowerStr.end(), lowerStr.begin(), 
+              [](unsigned char c){ return tolower(c); });
+    return lowerStr;
+}
+
+// Funcion para buscar una palabra en el texto
+void buscarPalabra(const string& texto, const string& palabra, int idHilo) {
+    string textoLower = toLower(texto);
+    string palabraLower = toLower(palabra);
+    
+    size_t pos = textoLower.find(palabraLower);
+    bool encontrada = (pos != string::npos);
+    
+    // Bloquear el mutex para evitar que se mezcle la salida
+    lock_guard<mutex> lock(cout_mutex);
+    
+    if (encontrada) {
+        cout << "Hilo " << idHilo << ": La palabra '" << palabra 
+             << "' fue ENCONTRADA en el texto." << endl;
+    } else {
+        cout << "Hilo " << idHilo << ": La palabra '" << palabra 
+             << "' NO fue encontrada en el texto." << endl;
+    }
+}
+
+// Función para generar texto de ejemplo
+string generarTextoEjemplo() {
+    return "La programación concurrente es un paradigma de programación "
+           "en el que múltiples tareas se ejecutan simultáneamente. "
+           "En C++, podemos utilizar hilos para lograr la concurrencia. "
+           "Los hilos permiten que diferentes partes de un programa se "
+           "ejecuten al mismo tiempo, mejorando el rendimiento en "
+           "sistemas con multiples nucleos. La busqueda de palabras en "
+           "textos largos es un ejemplo perfecto donde la concurrencia "
+           "puede ser beneficiosa. Al dividir la busqueda entre varios "
+           "hilos, podemos acelerar el proceso significativamente. "
+           "La biblioteca estandar de C++ proporciona la clase thread "
+           "para trabajar con hilos. Es importante manejar adecuadamente "
+           "la sincronizacion entre hilos usando mutex y otras "
+           "herramientas de concurrencia para evitar condiciones de "
+           "carrera y garantizar la consistencia de los datos. "
+           "La programacion multihilo requiere cuidado pero ofrece "
+           "grandes ventajas en terminos de eficiencia y rendimiento. "
+           "Este texto servira como ejemplo para demostrar cómo "
+           "funciona la busqueda concurrente de palabras usando hilos "
+           "en C++. La tecnologia avanza rapidamente y la necesidad de "
+           "procesamiento paralelo se vuelve cada vez mas importante. "
+           "Los desarrolladores deben entender estos conceptos para "
+           "crear aplicaciones modernas y eficientes. La concurrencia "
+           "no es solo sobre velocidad, sino tambien sobre eficiencia "
+           "en el uso de recursos del sistema. Con los procesadores "
+           "multinucleo siendo la norma, aprovechar la concurrencia "
+           "se ha vuelto esencial en el desarrollo de software.";
+}
+
+int main() {
+    // Mensaje de bienvenida
+    cout << "==============================================" << endl;
+    cout << "   BIENVENIDO AL BUSCADOR CONCURRENTE DE PALABRAS" << endl;
+    cout << "==============================================" << endl;
+    cout << endl;
+    
+    string texto;
+    int opcion;
+    
+    // Menú para elegir el texto
+    cout << "¿Cómo desea obtener el texto para buscar?" << endl;
+    cout << "1. Escribir mi propio texto" << endl;
+    cout << "2. Usar texto de ejemplo generado automáticamente" << endl;
+    cout << "Seleccione una opción (1 o 2): ";
+    cin >> opcion;
+    cin.ignore(); // Limpiar el buffer
+    
+    if (opcion == 1) {
+        cout << "\nPor favor, escriba el texto (presione Enter dos veces para finalizar):" << endl;
+        string linea;
+        while (true) {
+            getline(cin, linea);
+            if (linea.empty()) break;
+            texto += linea + " ";
+        }
+    } else {
+        texto = generarTextoEjemplo();
+        cout << "\nTexto de ejemplo generado:" << endl;
+        cout << "==============================================" << endl;
+        cout << texto << endl;
+        cout << "==============================================" << endl;
+    }
+    
+    if (texto.empty()) {
+        cout << "El texto está vacío. Saliendo del programa." << endl;
+        return 1;
+    }
+    
+    // Obtener las palabras a buscar
+    vector<string> palabras(4);
+    cout << "\nPor favor, ingrese 4 palabras para buscar:" << endl;
+    
+    for (int i = 0; i < 4; i++) {
+        cout << "Palabra " << (i + 1) << ": ";
+        cin >> palabras[i];
+    }
+    
+    cout << "\nIniciando búsqueda concurrente..." << endl;
+    cout << "==============================================" << endl;
+    
+    // Crear hilos para cada palabra
+    vector<thread> hilos;
+    
+    auto inicio = chrono::high_resolution_clock::now();
+    
+    for (int i = 0; i < 4; i++) {
+        hilos.emplace_back(buscarPalabra, texto, palabras[i], i + 1);
+    }
+    
+    // Esperar a que todos los hilos terminen
+    for (auto& hilo : hilos) {
+        hilo.join();
+    }
+    
+    auto fin = chrono::high_resolution_clock::now();
+    auto duracion = chrono::duration_cast<chrono::milliseconds>(fin - inicio);
+    
+    cout << "==============================================" << endl;
+    cout << "Búsqueda completada en " << duracion.count() << " milisegundos." << endl;
+    cout << "Gracias por usar el buscador concurrente!" << endl;
+    
+    return 0;
+}
