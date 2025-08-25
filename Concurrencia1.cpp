@@ -98,17 +98,9 @@ public:
         //Entrando a declarar que estamos usando método MyThread cómo función propia
         //Y que lo use cómo argumento para este objeto
         SearchThread = thread(&Searchers::MyThread, this);
+        SearchThread.join();
     }
 
-    //Destructor de la clase, cuando ya no necesitemos el objeto, es necesario unir el hilo al main
-    //El destructor que se declara aquí ejecutará esta tarea antes de destruir el objeto
-    //Sin esto, el compilador explota
-    ~Searchers() {
-        if (SearchThread.joinable()) {
-
-            SearchThread.join();
-        }
-    }
 
     //El Hilo se ejecuta desde dentro de la clase para aprovechar las funciones de Busqueda de la misma
     void MyThread() {
