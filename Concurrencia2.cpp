@@ -32,6 +32,7 @@ void buscarPalabra(const string& texto, const string& palabra, int idHilo) {
     lock_guard<mutex> lock(cout_mutex);
     
     if (encontrada) {
+        color(3);
         cout << "Hilo " << idHilo << ": La palabra '" << palabra 
              << "' fue ENCONTRADA en el texto." << endl;
     } else {
@@ -42,8 +43,8 @@ void buscarPalabra(const string& texto, const string& palabra, int idHilo) {
 
 // Funcion para generar texto de ejemplo
 string generarTextoEjemplo() {
-    return "La programación concurrente es un paradigma de programación "
-           "en el que múltiples tareas se ejecutan simultáneamente. "
+    return "La programacion concurrente es un paradigma de programacion "
+           "en el que multiples tareas se ejecutan simultaneamente. "
            "En C++, podemos utilizar hilos para lograr la concurrencia. "
            "Los hilos permiten que diferentes partes de un programa se "
            "ejecuten al mismo tiempo, mejorando el rendimiento en "
@@ -58,7 +59,7 @@ string generarTextoEjemplo() {
            "carrera y garantizar la consistencia de los datos. "
            "La programacion multihilo requiere cuidado pero ofrece "
            "grandes ventajas en terminos de eficiencia y rendimiento. "
-           "Este texto servira como ejemplo para demostrar cómo "
+           "Este texto servira como ejemplo para demostrar como "
            "funciona la busqueda concurrente de palabras usando hilos "
            "en C++. La tecnologia avanza rapidamente y la necesidad de "
            "procesamiento paralelo se vuelve cada vez mas importante. "
@@ -72,23 +73,30 @@ string generarTextoEjemplo() {
 
 int main() {
     // Mensaje de bienvenida
-    cout << "==============================================" << endl;
+    color(6);
+    cout << "=====================================================" << endl;
+    color(12);
     cout << "   BIENVENIDO AL BUSCADOR CONCURRENTE DE PALABRAS" << endl;
-    cout << "==============================================" << endl;
+    color(6);
+    cout << "=====================================================" << endl;
     cout << endl;
     
     string texto;
     int opcion;
     
     // para que escoja el usuario
+    color(3);
     cout << "Como quieres el texto?" << endl;
+    color(11);
     cout << "[1] Escribir mi propio texto" << endl;
-    cout << "[2] Usar texto de ejemplo generado automáticamente" << endl;
+    cout << "[2] Usar texto de ejemplo generado automaticamente" << endl;
+    color(10);
     cout << "Seleccione una opcion (1 o 2): ";
     cin >> opcion;
     cin.ignore(); // Limpiar el buffer
     
     if (opcion == 1) {
+        color(3);
         cout << "\nPor favor, escriba el texto (presione Enter dos veces para finalizar):" << endl;
         string linea;
         while (true) {
@@ -98,27 +106,36 @@ int main() {
         }
     } else {
         texto = generarTextoEjemplo();
+        color(3);
         cout << "\nTexto de ejemplo generado:" << endl;
-        cout << "==============================================" << endl;
+        color(2);
+        cout << "=============================================================" << endl;
+        color(10);
         cout << texto << endl;
-        cout << "==============================================" << endl;
+        color(2);
+        cout << "=============================================================" << endl;
     }
     
     if (texto.empty()) {
-        cout << "El texto esta� vacio. Saliendo del programa." << endl;
+        color(12);
+        cout << "El texto esta vacio. Saliendo del programa." << endl;
         return 0;
     }
     
     // Obtener las palabras a buscar
     vector<string> palabras(4);
+    color(3);
     cout << "\nPor favor, ingrese 4 palabras para buscar:" << endl;
     
-    for (int i = 1; i < 4; i++) {
-        cout << "Palabra " << i << ": ";
+    for (int i = 0; i < 4; i++) {
+        color(11);
+        cout << "Palabra " << i+1 << ": ";
         cin >> palabras[i];
     }
-    
+
+    color(3);
     cout << "\nIniciando busqueda concurrente..." << endl;
+    color(2);
     cout << "==============================================" << endl;
     
     // Crear hilos para cada palabra
@@ -137,9 +154,12 @@ int main() {
     
     auto fin = chrono::high_resolution_clock::now(); //toma captura en el reloj del procesador para ver cuando termino
     auto duracion = chrono::duration_cast<chrono::milliseconds>(fin - inicio); //duracion en milisegundos
-    
+
+    color(2);
     cout << "==============================================" << endl;
+    color(3);
     cout << "Busqueda completada en " << duracion.count() << " milisegundos." << endl;
+    color(5);
     cout << "Gracias por usar el buscador concurrente!" << endl;
     
     return 0;
