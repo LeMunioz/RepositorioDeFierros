@@ -6,11 +6,11 @@
 #include <algorithm>
 #include <cctype>
 #include <chrono>
-#include "colores"
+#include "colores.cpp"
 
 using namespace std;
 
-mutex cout_mutex; // Mutex para sincronizar la salida
+mutex cout_mutex; // Mutex para sincronizar la salida para que no se mezclen
 
 // Funcion para convertir texto a minusculas
 string toLower(const string& str) {
@@ -25,7 +25,7 @@ void buscarPalabra(const string& texto, const string& palabra, int idHilo) {
     string textoLower = toLower(texto);
     string palabraLower = toLower(palabra);
     
-    size_t pos = textoLower.find(palabraLower);
+    size_t pos = textoLower.find(palabraLower); // Buscar la palabra en el texto con la libreria estandar
     bool encontrada = (pos != string::npos);
     
     // Bloquear el mutex para evitar que se mezcle la salida
@@ -40,7 +40,7 @@ void buscarPalabra(const string& texto, const string& palabra, int idHilo) {
     }
 }
 
-// Función para generar texto de ejemplo
+// Funcion para generar texto de ejemplo
 string generarTextoEjemplo() {
     return "La programación concurrente es un paradigma de programación "
            "en el que múltiples tareas se ejecutan simultáneamente. "
@@ -80,11 +80,11 @@ int main() {
     string texto;
     int opcion;
     
-    // Menú para elegir el texto
-    cout << "¿Cómo desea obtener el texto para buscar?" << endl;
-    cout << "1. Escribir mi propio texto" << endl;
-    cout << "2. Usar texto de ejemplo generado automáticamente" << endl;
-    cout << "Seleccione una opción (1 o 2): ";
+    // para que escoja el usuario
+    cout << "Como quieres el texto?" << endl;
+    cout << "[1] Escribir mi propio texto" << endl;
+    cout << "[2] Usar texto de ejemplo generado automáticamente" << endl;
+    cout << "Seleccione una opcion (1 o 2): ";
     cin >> opcion;
     cin.ignore(); // Limpiar el buffer
     
@@ -105,29 +105,29 @@ int main() {
     }
     
     if (texto.empty()) {
-        cout << "El texto está vacío. Saliendo del programa." << endl;
-        return 1;
+        cout << "El texto esta� vacio. Saliendo del programa." << endl;
+        return 0;
     }
     
     // Obtener las palabras a buscar
     vector<string> palabras(4);
     cout << "\nPor favor, ingrese 4 palabras para buscar:" << endl;
     
-    for (int i = 0; i < 4; i++) {
-        cout << "Palabra " << (i + 1) << ": ";
+    for (int i = 1; i < 4; i++) {
+        cout << "Palabra " << i << ": ";
         cin >> palabras[i];
     }
     
-    cout << "\nIniciando búsqueda concurrente..." << endl;
+    cout << "\nIniciando busqueda concurrente..." << endl;
     cout << "==============================================" << endl;
     
     // Crear hilos para cada palabra
     vector<thread> hilos;
     
-    auto inicio = chrono::high_resolution_clock::now();
-    
+    auto inicio = chrono::high_resolution_clock::now(); //toma captura en el reloj del procesador para ver cuadno empezo
+    // Lanzar hilos para buscar cada palabra con su ID
     for (int i = 0; i < 4; i++) {
-        hilos.emplace_back(buscarPalabra, texto, palabras[i], i + 1);
+        hilos.emplace_back(buscarPalabra, texto, palabras[i], i + 1); //emplace_back construye el objeto en el lugar
     }
     
     // Esperar a que todos los hilos terminen
@@ -135,11 +135,11 @@ int main() {
         hilo.join();
     }
     
-    auto fin = chrono::high_resolution_clock::now();
-    auto duracion = chrono::duration_cast<chrono::milliseconds>(fin - inicio);
+    auto fin = chrono::high_resolution_clock::now(); //toma captura en el reloj del procesador para ver cuando termino
+    auto duracion = chrono::duration_cast<chrono::milliseconds>(fin - inicio); //duracion en milisegundos
     
     cout << "==============================================" << endl;
-    cout << "Búsqueda completada en " << duracion.count() << " milisegundos." << endl;
+    cout << "Busqueda completada en " << duracion.count() << " milisegundos." << endl;
     cout << "Gracias por usar el buscador concurrente!" << endl;
     
     return 0;
