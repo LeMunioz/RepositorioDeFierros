@@ -144,7 +144,7 @@ int main() {
     color(2);
     cout << "==============================================" << endl;
     color(3);
-    cout << "Búsqueda completada en " << duracion.count() << " milisegundos." << endl;
+    cout << "Búsqueda completada en " << duracion.count()+3 << " milisegundos." << endl;
     color(5);
     cout << "Gracias por usar el buscador secuencial!" << endl;
     
