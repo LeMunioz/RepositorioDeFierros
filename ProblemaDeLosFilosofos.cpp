@@ -6,6 +6,7 @@
 #include <chrono> 	//para medir y manejar tiempo
 #include <atomic> 	//para la variable ejecutando que quiero que no tenga condicion de carrera
 #include <cstdlib>
+#include <ctime>
 #include "colores.cpp"
 using namespace std;
 
@@ -66,23 +67,23 @@ void dibujar() {
     gotoxy(7,5); color(cfilosofo[0]); cout << "@";
     gotoxy(8,5); color(cfilosofo[0]); cout << "#";
     gotoxy(9,5); color(cfilosofo[0]); cout << "@";
-    gotoxy(7,6); color(cfilosofo[0]); cout << "%";
+    gotoxy(7,6); color(cfilosofo[0]); cout << "|";
     gotoxy(8,6); color(cfilosofo[0]); cout << "%";
-    gotoxy(9,6); color(cfilosofo[0]); cout << "%";
+    gotoxy(9,6); color(cfilosofo[0]); cout << "|";
 
     gotoxy(2,9); color(cfilosofo[1]); cout << "@";// Filosofo 2 (izquierda)
     gotoxy(3,9); color(cfilosofo[1]); cout << "@";
-    gotoxy(4,9); color(cfilosofo[1]); cout << "%";
+    gotoxy(4,9); color(cfilosofo[1]); cout << "-";
     gotoxy(2,10); color(cfilosofo[1]); cout << "@";
     gotoxy(3,10); color(cfilosofo[1]); cout << "#";
     gotoxy(4,10); color(cfilosofo[1]); cout << "%";
     gotoxy(2,11); color(cfilosofo[1]); cout << "@";
     gotoxy(3,11); color(cfilosofo[1]); cout << "@";
-    gotoxy(4,11); color(cfilosofo[1]); cout << "%";
+    gotoxy(4,11); color(cfilosofo[1]); cout << "-";
 
-    gotoxy(4,15); color(cfilosofo[2]); cout << "%";//Filosofo 3 (abajoizquierda)
+    gotoxy(4,15); color(cfilosofo[2]); cout << "|";//Filosofo 3 (abajoizquierda)
     gotoxy(5,15); color(cfilosofo[2]); cout << "%";
-    gotoxy(6,15); color(cfilosofo[2]); cout << "%";
+    gotoxy(6,15); color(cfilosofo[2]); cout << "|";
     gotoxy(4,16); color(cfilosofo[2]); cout << "@";
     gotoxy(5,16); color(cfilosofo[2]); cout << "#";
     gotoxy(6,16); color(cfilosofo[2]); cout << "@";
@@ -90,9 +91,9 @@ void dibujar() {
     gotoxy(5,17); color(cfilosofo[2]); cout << "@";
     gotoxy(6,17); color(cfilosofo[2]); cout << "@";
 
-    gotoxy(10,15); color(cfilosofo[3]); cout << "%";//Filosofo 4 (abajoderecha)
+    gotoxy(10,15); color(cfilosofo[3]); cout << "|";//Filosofo 4 (abajoderecha)
     gotoxy(11,15); color(cfilosofo[3]); cout << "%";
-    gotoxy(12,15); color(cfilosofo[3]); cout << "%";
+    gotoxy(12,15); color(cfilosofo[3]); cout << "|";
     gotoxy(10,16); color(cfilosofo[3]); cout << "@";
     gotoxy(11,16); color(cfilosofo[3]); cout << "#";
     gotoxy(12,16); color(cfilosofo[3]); cout << "@";
@@ -100,13 +101,13 @@ void dibujar() {
     gotoxy(11,17); color(cfilosofo[3]); cout << "@";
     gotoxy(12,17); color(cfilosofo[3]); cout << "@";
 
-    gotoxy(12,9); color(cfilosofo[4]); cout << "%";//Filosofo 5 (derecha)
+    gotoxy(12,9); color(cfilosofo[4]); cout << "-";//Filosofo 5 (derecha)
     gotoxy(13,9); color(cfilosofo[4]); cout << "@";
     gotoxy(14,9); color(cfilosofo[4]); cout << "@";
     gotoxy(12,10); color(cfilosofo[4]); cout << "%";
     gotoxy(13,10); color(cfilosofo[4]); cout << "#";
     gotoxy(14,10); color(cfilosofo[4]); cout << "@";
-    gotoxy(12,11); color(cfilosofo[4]); cout << "%";
+    gotoxy(12,11); color(cfilosofo[4]); cout << "-";
     gotoxy(13,11); color(cfilosofo[4]); cout << "@";
     gotoxy(14,11); color(cfilosofo[4]); cout << "@";
 
@@ -125,8 +126,8 @@ void dibujar() {
     gotoxy(6, 11); cout << "_____";
     
     //Contornos  (margen)
-    gotoxy(1,3);color(1);cout<<"===================================" << endl;color(15);//contorno superior
-	gotoxy(1,19);color(1);cout<<"===================================" << endl;color(15);//contorno inferior
+    gotoxy(1,3);color(1);cout<<"=========================================" << endl;color(15);//contorno superior
+	gotoxy(1,19);color(1);cout<<"=========================================" << endl;color(15);//contorno inferior
 	for(int margen=3; margen <20; margen++){  //contorno derecho
     	gotoxy(20, margen);color(1);cout<<"|";
 	}
@@ -170,7 +171,8 @@ void filosofo(int id) {
                         estado[id] = "comiendo";
                         dibujar();
                     }
-                    this_thread::sleep_for(chrono::seconds(4));
+                 
+                    this_thread::sleep_for(chrono::seconds(4 + (rand() % 2))); //para que se quede comiendo  un numero random entre 4 y 6 segundos
                     
                     // Soltar palillos
                     palillos[palilloDer].unlock();
@@ -180,7 +182,7 @@ void filosofo(int id) {
                     palillos[palilloIzq].unlock();
                 }
             }
-            this_thread::sleep_for(chrono::milliseconds(200)); //para volver a intentar a agarrar
+            this_thread::sleep_for(chrono::milliseconds(100)); //para volver a intentar a agarrar
         }//fin de intento de tomar palillos
     }
 }//#### FIN DE FUNCION filosofo ####
@@ -188,7 +190,14 @@ void filosofo(int id) {
 // MAIN
 int main(){
 	ajustarConsola(80, 30);
-
+	srand(time(NULL)); 
+	
+    gotoxy(2,5);color(5);cout<<"=================================";
+	gotoxy(6,6);color(5);cout <<"PROBLEMA DE LOS FILOSOFOS";
+	gotoxy(6,7);color(15);cout<<"Angel Eduardo Muñoz Perez";
+	gotoxy(2,8);color(5);cout<<"=================================";
+	std::this_thread::sleep_for(std::chrono::seconds(5));
+	
 	// Dibujo inicial
 	{
 	    lock_guard<mutex> lock(pantalla); //un mutex junto a pantalla para controlar que no todos los procesos la cambien a cada rato
