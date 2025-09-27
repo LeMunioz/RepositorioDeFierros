@@ -1,10 +1,10 @@
 #include <iostream>
-#include <thread>
-#include <mutex>
-#include <string>
-#include <vector>
-#include <chrono>
-#include <atomic>
+#include <thread>	//para los hilos de procesos
+#include <mutex>	//para memoria compartida
+#include <string> 
+#include <vector> 	//para los arreglos dinamicos
+#include <chrono> 	//para medir y manejar tiempo
+#include <atomic> 	//para la variable ejecutando que quiero que no tenga condicion de carrera
 #include <cstdlib>
 #include "colores.cpp"
 using namespace std;
@@ -19,7 +19,7 @@ PROBLEMA DE LOS FILOSOFOS_ Usando memoria compartida y bloqueos
 
 /*
 COMO FUNCIONA?
-	El problema de los filosofos requiere que todos puedan comer o pensar,
+	El problema de los filosofos consiste en que todos puedan comer o pensar,
 		para comer deben tomar los 2 palillos que tienen en frente, si alguno
 		ya esta ocupado, deben esperar a que su vecino termine.
 	Mi programa lo que hace es tomar los palillos como un arreglo, y cada
@@ -29,9 +29,12 @@ COMO FUNCIONA?
 		si el derecho no esta desocupado solo hace lock al izquierdo y espera
 		su tiempo y vuelve a checar. 
 	Por default los filosofos se inicializan durante cada paso del ciclo con los estados
-		(el texto que describe su accion actual) y su cfilosofo[id] un color para
-		distinguir el estado mas facil con el valor de "pensando" cuando logran tomar
-		ambos palillos cambian estos valores a los de "comiendo"	
+		(el texto que describe su accion actual) y su cfilosofo[id] (un color para
+		distinguir el estado mas facil) con el valor de "pensando" cuando logran tomar
+		ambos palillos cambian estos valores a los de "comiendo"
+	Se necesita de libreria de "colores.cpp" que tiene funciones como:
+		color(int); gotoxy(int,int); & ajustarConsola(int,int); 
+		Siendo todas funciones de <windows.h> 		
 */
 
 //VARIABLES GLOBALES
@@ -172,12 +175,12 @@ void filosofo(int id) {
                     // Soltar palillos
                     palillos[palilloDer].unlock();
                     palillos[palilloIzq].unlock();
-                    break; // termina de comer, vuelve a pensar
+                    break; // termina de comer, rompe este while, vuelve a > pensando
                 } else {
                     palillos[palilloIzq].unlock();
                 }
             }
-            this_thread::sleep_for(chrono::milliseconds(200));
+            this_thread::sleep_for(chrono::milliseconds(200)); //para volver a intentar a agarrar
         }//fin de intento de tomar palillos
     }
 }//#### FIN DE FUNCION filosofo ####
@@ -188,7 +191,7 @@ int main(){
 
 	// Dibujo inicial
 	{
-	    lock_guard<mutex> lock(pantalla);
+	    lock_guard<mutex> lock(pantalla); //un mutex junto a pantalla para controlar que no todos los procesos la cambien a cada rato
 	    dibujar();
 	}
 
