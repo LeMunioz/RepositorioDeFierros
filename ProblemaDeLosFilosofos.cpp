@@ -21,20 +21,17 @@ PROBLEMA DE LOS FILOSOFOS_ Usando memoria compartida y bloqueos
 const int comiendo = 12; //para cambiar el color cuando comen
 const int pensando = 3;  //para cambiar el color cuando piensan
 
-// Palillos compartidos
-mutex palillos[5];
-
-// Mutex para actualizar pantalla de forma ordenada
-mutex pantalla;
+mutex palillos[5]; // Palillos compartidos
+mutex pantalla; // Mutex para actualizar pantalla de forma ordenada
 
 // Colores y estados actuales de cada filosofo
 int cfilosofo[5] = {pensando, pensando, pensando, pensando, pensando};
 string estado[5] = {"pensando","pensando","pensando","pensando","pensando"};
 
 // Control de ejecución
-atomic<bool> ejecutando(true);
+atomic<bool> ejecutando(true); //para que no haya condicion de carrera en esta variable
 
-//FUNCION PARA REDIBUJAR PANTALLA (respeta tu forma de dibujo)
+//FUNCION PARA DIBUJAR A LOS FILOSOFOS
 void dibujar() {
     system("cls");
     color(1);
@@ -48,33 +45,46 @@ void dibujar() {
     gotoxy(6,5);color(cfilosofo[0]);cout<<"%";
     gotoxy(7,5);color(cfilosofo[0]);cout<<"%";
     
+    gotoxy(5,5);color(6);cout<<"I";
+    
     gotoxy(2,6);color(cfilosofo[1]);cout<<"@";//Filosofo 2(el izquierdo)
     gotoxy(2,7);color(cfilosofo[1]);cout<<"@";
     gotoxy(3,6);color(cfilosofo[1]);cout<<"%";
     gotoxy(3,7);color(cfilosofo[1]);cout<<"%";
+    
+    gotoxy(3,8);color(6);cout<<"/";
     
     gotoxy(4,9);color(cfilosofo[2]);cout<<"%";//Filosofo 3(el abajoizquierdo)
     gotoxy(5,9);color(cfilosofo[2]);cout<<"%";
     gotoxy(4,10);color(cfilosofo[2]);cout<<"@";
     gotoxy(5,10);color(cfilosofo[2]);cout<<"@";
     
+    gotoxy(6,9);color(6);cout<<"I";
+    
     gotoxy(8,9);color(cfilosofo[3]);cout<<"%";//Filosofo 4(el abajoderecho)
     gotoxy(9,9);color(cfilosofo[3]);cout<<"%";
     gotoxy(8,10);color(cfilosofo[3]);cout<<"@";
     gotoxy(9,10);color(cfilosofo[3]);cout<<"@";
     
+    gotoxy(9,8);color(6);cout<<"I";
+    
     gotoxy(10,6);color(cfilosofo[4]);cout<<"%";//Filosofo 5(el derecho)
     gotoxy(11,6);color(cfilosofo[4]);cout<<"@";
     gotoxy(10,7);color(cfilosofo[4]);cout<<"%";
     gotoxy(11,7);color(cfilosofo[4]);cout<<"@";
+    
+    gotoxy(9,5);color(6);cout<<"/";
+    
+    gotoxy(5,7);color(15);cout<<"arroz";
 
-    //ESTADOS
+    //Estados
     gotoxy(1,12);color(7);cout<<"FILOSOFO 1 ESTA: "<<estado[0]<<endl;
     gotoxy(1,13);color(7);cout<<"FILOSOFO 2 ESTA: "<<estado[1]<<endl;
     gotoxy(1,14);color(7);cout<<"FILOSOFO 3 ESTA: "<<estado[2]<<endl;
     gotoxy(1,15);color(7);cout<<"FILOSOFO 4 ESTA: "<<estado[3]<<endl;
     gotoxy(1,16);color(7);cout<<"FILOSOFO 5 ESTA: "<<estado[4]<<endl;
-}
+}//FIN DE FUNCION dibujar ####
+
 
 //FUNCION DE CADA FILOSOFO
 void filosofo(int id) {
@@ -102,7 +112,7 @@ void filosofo(int id) {
                         estado[id] = "comiendo";
                         dibujar();
                     }
-                    this_thread::sleep_for(chrono::seconds(10));
+                    this_thread::sleep_for(chrono::seconds(6));
                     
                     // Soltar palillos
                     palillos[palilloDer].unlock();
@@ -113,9 +123,9 @@ void filosofo(int id) {
                 }
             }
             this_thread::sleep_for(chrono::milliseconds(200));
-        }
+        }//fin de intento de tomar palillos
     }
-}
+}//FIN DE FUNCION filosofo ####
 
 // MAIN
 int main(){
