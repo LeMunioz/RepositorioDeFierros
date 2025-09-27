@@ -1,6 +1,14 @@
 #include <Windows.h>
 
 /*
+COMO USAR
+COLORES
+	color(numero);  //todo lo que este despues se pintara del color correspondiente 
+CORDENADAS
+	gotoxy(x,y);	//el cursos se ubicara en es columna y renglon
+TAMAÑO DE VENTANA   
+	ajustarConsola(x, y); //la consola se pondra del tamaño en columnas y filas	
+
 COLORES
 [1]  AZUL REY
 [2]  VERDE
@@ -19,7 +27,7 @@ COLORES
 [15] BLANCO
 [16]++ FONDO  
 */
-gotoxy(int x,int y){
+void gotoxy(int x,int y){
 	HANDLE hcon;
 	hcon = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD dwPos;
@@ -29,7 +37,7 @@ gotoxy(int x,int y){
 	
 	SetConsoleCursorPosition(hcon,dwPos);
 }
-gotox(int x){
+void gotox(int x){
 	HANDLE hcon;
 	hcon = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD dwPos;
@@ -39,8 +47,24 @@ gotox(int x){
 	SetConsoleCursorPosition(hcon,dwPos);
 }
 
-color(int color){
+void color(int color){
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	
 	SetConsoleTextAttribute(hConsole, color);
+}
+
+
+// Función para ajustar la ventana de la consola
+void ajustarConsola(int ancho, int alto) {
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    // Ajustar el tamaño del buffer de pantalla
+    COORD bufferSize;
+    bufferSize.X = ancho;
+    bufferSize.Y = alto;
+    SetConsoleScreenBufferSize(hOut, bufferSize);
+
+    // Ajustar la ventana visible
+    SMALL_RECT windowSize = {0, 0, ancho - 1, alto - 1};
+    SetConsoleWindowInfo(hOut, TRUE, &windowSize);
 }
