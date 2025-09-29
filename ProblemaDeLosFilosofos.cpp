@@ -19,10 +19,10 @@ PROBLEMA DE LOS FILOSOFOS_ Usando memoria compartida y bloqueos
 */
 
 /*
-COMO FUNCIONA?
 	El problema de los filosofos consiste en que todos puedan comer o pensar,
 		para comer deben tomar los 2 palillos que tienen en frente, si alguno
 		ya esta ocupado, deben esperar a que su vecino termine.
+COMO FUNCIONA?
 	Mi programa lo que hace es tomar los palillos como un arreglo, y cada
 		filosofo es un proceso, cuando debe tomar palillos: primero checa que
 		el izquierdo este desocupado, si lo esta lo toma y ahora ve el derecho,
@@ -30,7 +30,7 @@ COMO FUNCIONA?
 		si el derecho no esta desocupado solo hace lock al izquierdo y espera
 		su tiempo y vuelve a checar. 
 	Por default los filosofos se inicializan durante cada paso del ciclo con los estados
-		(el texto que describe su accion actual) y su cfilosofo[id] (un color para
+		(el texto que describe su accion actual) y su ColorFilosofo[id] (un color para
 		distinguir el estado mas facil) con el valor de "pensando" cuando logran tomar
 		ambos palillos cambian estos valores a los de "comiendo"
 	Se necesita de libreria de "colores.cpp" que tiene funciones como:
@@ -46,7 +46,7 @@ mutex palillos[5]; // Palillos compartidos
 mutex pantalla; // Mutex para actualizar pantalla de forma ordenada
 
 // Colores y estados actuales de cada filosofo
-int cfilosofo[5] = {pensando, pensando, pensando, pensando, pensando};
+int ColorFilosofo[5] = {pensando, pensando, pensando, pensando, pensando};
 string estado[5] = {"pensando","pensando","pensando","pensando","pensando"};
 
 // Control de ejecución
@@ -56,60 +56,60 @@ atomic<bool> ejecutando(true); //para que no haya condicion de carrera en esta v
 void dibujar() {
     system("cls");
     color(1);
-    cout<<"    BIENVENIDO A MI PROGRAMA" << endl;
+    cout<<"       BIENVENIDO A MI PROGRAMA" << endl;
     color(10);
-    cout<<"Problema de los filosofos comelones"<<endl;
+    cout<<"   Problema de los filosofos comelones"<<endl;
 
 	//DIBUJANDO A LOS FILOSOFOS
-    gotoxy(7,4); color(cfilosofo[0]); cout << "@";// Filosofo 1 (arriba)
-    gotoxy(8,4); color(cfilosofo[0]); cout << "@";
-    gotoxy(9,4); color(cfilosofo[0]); cout << "@";
-    gotoxy(7,5); color(cfilosofo[0]); cout << "@";
-    gotoxy(8,5); color(cfilosofo[0]); cout << "#";
-    gotoxy(9,5); color(cfilosofo[0]); cout << "@";
-    gotoxy(7,6); color(cfilosofo[0]); cout << "|";
-    gotoxy(8,6); color(cfilosofo[0]); cout << "%";
-    gotoxy(9,6); color(cfilosofo[0]); cout << "|";
+    gotoxy(7,4); color(ColorFilosofo[0]); cout << "@";// Filosofo 1 (arriba)
+    gotoxy(8,4); color(ColorFilosofo[0]); cout << "@";
+    gotoxy(9,4); color(ColorFilosofo[0]); cout << "@";
+    gotoxy(7,5); color(ColorFilosofo[0]); cout << "@";
+    gotoxy(8,5); color(ColorFilosofo[0]); cout << "#";
+    gotoxy(9,5); color(ColorFilosofo[0]); cout << "@";
+    gotoxy(7,6); color(ColorFilosofo[0]); cout << "|";
+    gotoxy(8,6); color(ColorFilosofo[0]); cout << "%";
+    gotoxy(9,6); color(ColorFilosofo[0]); cout << "|";
 
-    gotoxy(2,9); color(cfilosofo[1]); cout << "@";// Filosofo 2 (izquierda)
-    gotoxy(3,9); color(cfilosofo[1]); cout << "@";
-    gotoxy(4,9); color(cfilosofo[1]); cout << "-";
-    gotoxy(2,10); color(cfilosofo[1]); cout << "@";
-    gotoxy(3,10); color(cfilosofo[1]); cout << "#";
-    gotoxy(4,10); color(cfilosofo[1]); cout << "%";
-    gotoxy(2,11); color(cfilosofo[1]); cout << "@";
-    gotoxy(3,11); color(cfilosofo[1]); cout << "@";
-    gotoxy(4,11); color(cfilosofo[1]); cout << "-";
+    gotoxy(2,9); color(ColorFilosofo[1]); cout << "@";// Filosofo 2 (izquierda)
+    gotoxy(3,9); color(ColorFilosofo[1]); cout << "@";
+    gotoxy(4,9); color(ColorFilosofo[1]); cout << "-";
+    gotoxy(2,10); color(ColorFilosofo[1]); cout << "@";
+    gotoxy(3,10); color(ColorFilosofo[1]); cout << "#";
+    gotoxy(4,10); color(ColorFilosofo[1]); cout << "%";
+    gotoxy(2,11); color(ColorFilosofo[1]); cout << "@";
+    gotoxy(3,11); color(ColorFilosofo[1]); cout << "@";
+    gotoxy(4,11); color(ColorFilosofo[1]); cout << "-";
 
-    gotoxy(4,15); color(cfilosofo[2]); cout << "|";//Filosofo 3 (abajoizquierda)
-    gotoxy(5,15); color(cfilosofo[2]); cout << "%";
-    gotoxy(6,15); color(cfilosofo[2]); cout << "|";
-    gotoxy(4,16); color(cfilosofo[2]); cout << "@";
-    gotoxy(5,16); color(cfilosofo[2]); cout << "#";
-    gotoxy(6,16); color(cfilosofo[2]); cout << "@";
-    gotoxy(4,17); color(cfilosofo[2]); cout << "@";
-    gotoxy(5,17); color(cfilosofo[2]); cout << "@";
-    gotoxy(6,17); color(cfilosofo[2]); cout << "@";
+    gotoxy(4,15); color(ColorFilosofo[2]); cout << "|";//Filosofo 3 (abajoizquierda)
+    gotoxy(5,15); color(ColorFilosofo[2]); cout << "%";
+    gotoxy(6,15); color(ColorFilosofo[2]); cout << "|";
+    gotoxy(4,16); color(ColorFilosofo[2]); cout << "@";
+    gotoxy(5,16); color(ColorFilosofo[2]); cout << "#";
+    gotoxy(6,16); color(ColorFilosofo[2]); cout << "@";
+    gotoxy(4,17); color(ColorFilosofo[2]); cout << "@";
+    gotoxy(5,17); color(ColorFilosofo[2]); cout << "@";
+    gotoxy(6,17); color(ColorFilosofo[2]); cout << "@";
 
-    gotoxy(10,15); color(cfilosofo[3]); cout << "|";//Filosofo 4 (abajoderecha)
-    gotoxy(11,15); color(cfilosofo[3]); cout << "%";
-    gotoxy(12,15); color(cfilosofo[3]); cout << "|";
-    gotoxy(10,16); color(cfilosofo[3]); cout << "@";
-    gotoxy(11,16); color(cfilosofo[3]); cout << "#";
-    gotoxy(12,16); color(cfilosofo[3]); cout << "@";
-    gotoxy(10,17); color(cfilosofo[3]); cout << "@";
-    gotoxy(11,17); color(cfilosofo[3]); cout << "@";
-    gotoxy(12,17); color(cfilosofo[3]); cout << "@";
+    gotoxy(10,15); color(ColorFilosofo[3]); cout << "|";//Filosofo 4 (abajoderecha)
+    gotoxy(11,15); color(ColorFilosofo[3]); cout << "%";
+    gotoxy(12,15); color(ColorFilosofo[3]); cout << "|";
+    gotoxy(10,16); color(ColorFilosofo[3]); cout << "@";
+    gotoxy(11,16); color(ColorFilosofo[3]); cout << "#";
+    gotoxy(12,16); color(ColorFilosofo[3]); cout << "@";
+    gotoxy(10,17); color(ColorFilosofo[3]); cout << "@";
+    gotoxy(11,17); color(ColorFilosofo[3]); cout << "@";
+    gotoxy(12,17); color(ColorFilosofo[3]); cout << "@";
 
-    gotoxy(12,9); color(cfilosofo[4]); cout << "-";//Filosofo 5 (derecha)
-    gotoxy(13,9); color(cfilosofo[4]); cout << "@";
-    gotoxy(14,9); color(cfilosofo[4]); cout << "@";
-    gotoxy(12,10); color(cfilosofo[4]); cout << "%";
-    gotoxy(13,10); color(cfilosofo[4]); cout << "#";
-    gotoxy(14,10); color(cfilosofo[4]); cout << "@";
-    gotoxy(12,11); color(cfilosofo[4]); cout << "-";
-    gotoxy(13,11); color(cfilosofo[4]); cout << "@";
-    gotoxy(14,11); color(cfilosofo[4]); cout << "@";
+    gotoxy(12,9); color(ColorFilosofo[4]); cout << "-";//Filosofo 5 (derecha)
+    gotoxy(13,9); color(ColorFilosofo[4]); cout << "@";
+    gotoxy(14,9); color(ColorFilosofo[4]); cout << "@";
+    gotoxy(12,10); color(ColorFilosofo[4]); cout << "%";
+    gotoxy(13,10); color(ColorFilosofo[4]); cout << "#";
+    gotoxy(14,10); color(ColorFilosofo[4]); cout << "@";
+    gotoxy(12,11); color(ColorFilosofo[4]); cout << "-";
+    gotoxy(13,11); color(ColorFilosofo[4]); cout << "@";
+    gotoxy(14,11); color(ColorFilosofo[4]); cout << "@";
 
     // PALILLOS amarillos
     color(14);
@@ -134,7 +134,7 @@ void dibujar() {
     // Estados
     gotoxy(24,5);color(8);cout<<"LISTA DE FILOSOFOS"<<endl;
     for (SHORT i = 0; i < 5; i++) {
-        gotoxy(24, 8 + i); color(cfilosofo[i]);
+        gotoxy(24, 8 + i); color(ColorFilosofo[i]);
         cout << "FILOSOFO " << i+1 << " ESTA: " << estado[i] << endl;
     }
     
@@ -154,11 +154,11 @@ void filosofo(int id) {
         // Pensando
         {
             lock_guard<mutex> lock(pantalla);
-            cfilosofo[id] = pensando;
+            ColorFilosofo[id] = pensando;
             estado[id] = "pensando";
             dibujar();
         }
-        this_thread::sleep_for(chrono::seconds(2));
+        this_thread::sleep_for(chrono::seconds(1));
 
         // Intentar tomar palillos
         while (true) {
@@ -167,12 +167,12 @@ void filosofo(int id) {
                     // Comer
                     {
                         lock_guard<mutex> lock(pantalla);
-                        cfilosofo[id] = comiendo;
+                        ColorFilosofo[id] = comiendo;
                         estado[id] = "comiendo";
                         dibujar();
                     }
                  
-                    this_thread::sleep_for(chrono::seconds(4 + (rand() % 2))); //para que se quede comiendo  un numero random entre 4 y 6 segundos
+                    this_thread::sleep_for(chrono::seconds(4 + (rand() % 3))); //para que se quede comiendo  un numero random entre 4 y 6 segundos
                     
                     // Soltar palillos
                     palillos[palilloDer].unlock();
@@ -182,22 +182,27 @@ void filosofo(int id) {
                     palillos[palilloIzq].unlock();
                 }
             }
-            this_thread::sleep_for(chrono::milliseconds(100)); //para volver a intentar a agarrar
+            this_thread::sleep_for(chrono::milliseconds(200)); //para volver a intentar a agarrar
         }//fin de intento de tomar palillos
     }
 }//#### FIN DE FUNCION filosofo ####
 
 // MAIN
 int main(){
-	ajustarConsola(80, 30);
+	ajustarConsola(20, 90);
 	srand(time(NULL)); 
-	
-    gotoxy(2,5);color(5);cout<<"=================================";
-	gotoxy(6,6);color(5);cout <<"PROBLEMA DE LOS FILOSOFOS";
-	gotoxy(6,7);color(15);cout<<"Angel Eduardo Muñoz Perez";
-	gotoxy(2,8);color(5);cout<<"=================================";
-	std::this_thread::sleep_for(std::chrono::seconds(5));
-	
+																													
+    gotoxy(2,5);color(5);cout <<"=================================================================";
+	gotoxy(6,6);color(5);cout <<" __________.__.__                      _____             ";
+	gotoxy(6,7);color(5);cout <<"l_  _____/|__|  |   ____  ___________/ ____l____  ______";
+	gotoxy(6,8);color(5);cout <<"|   ___)  |  |  |  /  _ l/  ___/  _ l   __l/  _ l/  ___/";
+	gotoxy(6,9);color(5);cout <<"|   l     |  |  |_(  <_> )___ (  <_> )  | (  <_> )___ l ";
+	gotoxy(6,10);color(5);cout<<"l__ /     |__|____/l____/____  >____/|__|  l____/____  >";
+	gotoxy(6,11);color(5);cout<<"   l/                         l/                     l/ ";
+	gotoxy(6,12);color(6);cout<<"                      By Munoz                           ";
+	gotoxy(2,13);color(5);cout<<"================================================================"; gotoxy(1,26);
+	std::this_thread::sleep_for(std::chrono::seconds(7));
+
 	// Dibujo inicial
 	{
 	    lock_guard<mutex> lock(pantalla); //un mutex junto a pantalla para controlar que no todos los procesos la cambien a cada rato
