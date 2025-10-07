@@ -30,19 +30,25 @@ vector<string> pizzas_hechas(1000, ""); // Lista de pizzas terminadas
 // -------------------- FUNCIONES AUXILIARES --------------------
 string tipoPizza(int n) {
     switch (n) {
-        case 1: return "Peperoni";
-        case 2: return "Vegetariana";
-        case 3: return "Carnes Frias";
-        case 4: return "Hawaiana";
-        case 5: return "Italiana";
-        default: return "Desconocida";
+        case 1: 
+			return "Peperoni";
+        case 2: 
+			return "Vegetariana";
+        case 3: 
+			return "Carnes Frias";
+        case 4: 
+			return "Hawaiana";
+        case 5: 
+			return "Italiana";
+        default: 
+			return "Desconocida";
     }
 }
 
-// -------------------- CAJA (PRODUCTOR) --------------------
-// Si modo == 1 ? granular  |  Si modo == 2 ? grueso
+// -------------------- HILO CAJA --------------------
 void Caja(int modo) {
     srand(time(0));
+    
     if (modo == 2) {
         // BLOQUE GRUESO
         while (!mtx.try_lock()) {} // intentar bloquear
@@ -62,9 +68,9 @@ void Caja(int modo) {
             }
         }
     }
-}
+}// #### FIN DE FUNCION Caja ####
 
-// -------------------- COCINERO (CONSUMIDOR) --------------------
+// -------------------- HILO COCINERO --------------------
 void Cocinero(int modo) {
     if (modo == 2) {
         // BLOQUE GRUESO
@@ -85,7 +91,7 @@ void Cocinero(int modo) {
             }
         }
     }
-}
+}// #### FIN DE FUNCION Cocinero ####
 
 // -------------------- FUNCIÓN PRINCIPAL --------------------
 int main() {
@@ -125,10 +131,10 @@ int main() {
     cout << "=============================================\n";
 
     cout << "\nPrimeras 10 pizzas procesadas:\n";
-    for (int i = 0; i < 10; ++i)
+    for (int i = 0; i < 1000; ++i)
         cout << "Orden #" << i + 1 << ": " << pizzas_hechas[i] << endl;
 
-    cout << "\nFin del programa.\n";
+    cout << "Fin del programa.2";
     return 0;
-}
+}// #### FIN DE FUNCION main ####
 
