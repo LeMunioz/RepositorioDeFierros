@@ -17,6 +17,21 @@ Programación Paralela y Concurrente – Prof. Carlos Javier
 ACTIVIDAD 4: (lock) Bloque Grueso y Granular
 */
 
+/*
+COMO FUNCIONA?
+El programa implementa dos hilos, uno es Caja(): que se encarga
+	de crear 1000 tareas las cuales son crear 1000 numeros aleatorios
+	dentro de <lista_de_tareas>.
+	y otro es Cocina(): que se encarga de procesar 1000 tareas lo cual
+	consiste en dependiendo del numero de <lista_de_tareas>, mete en
+	<pizzas_hechas> un tipo de pizza usando la funcion tipoPizza(), 
+	ademas de aumentar en uno los contadores de pizza por cada iteracion
+	para poder ver la cantidad final de cada tipo de pizza.
+	Estos dos hilos pueden trabajar con bloqueo granular o grueso y se 
+	decide cual metodo sera desde el main usando la variable modo para
+	que dentro de cada hilo puedas hacerlo de una forma u otra gracias a un if.
+*/
+
 // -------------------- VARIABLES GLOBALES --------------------
 mutex mtx; 
 vector<int> lista_de_tareas(1000, 0);
