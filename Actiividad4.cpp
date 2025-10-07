@@ -6,6 +6,8 @@
 #include <string>
 #include <cstdlib>
 #include <ctime>
+#include <fstream>
+#include "colores.cpp" 
 using namespace std;
 
 /*
@@ -13,21 +15,16 @@ ANGEL EDUARDO MUÑOZ PEREZ
 Ing COMPUTACIÓN – CUALTOS 25B
 Programación Paralela y Concurrente – Prof. Carlos Javier
 ACTIVIDAD 4: (lock) Bloque Grueso y Granular
-
-Simulación de pizzería:
-- Un hilo "caja" genera los pedidos (números aleatorios del 1 al 5).
-- Un hilo "cocinero" procesa las órdenes y las convierte en nombres de pizza.
-- Se mide el tiempo de ejecución en dos modos:
-    1. Bloque Grueso
-    2. Bloque Granular
 */
 
 // -------------------- VARIABLES GLOBALES --------------------
-mutex mtx; // Lock compartido
-vector<int> lista_de_tareas(1000, 0);  // Lista que representa las órdenes
-vector<string> pizzas_hechas(1000, ""); // Lista de pizzas terminadas
+mutex mtx; 
+vector<int> lista_de_tareas(1000, 0);
+vector<string> pizzas_hechas(1000, "");
+// Contadores de pizzas
+int peperoni = 0, vegetariana = 0, carnes_frias = 0, hawaiana = 0, italiana = 0, desconocida = 0;
 
-// -------------------- FUNCIONES AUXILIARES --------------------
+// -------------------- FUNCIONES --------------------
 string tipoPizza(int n) {
     switch (n) {
         case 1: 
@@ -45,13 +42,19 @@ string tipoPizza(int n) {
     }
 }
 
+void reiniciarVectores() {
+    fill(lista_de_tareas.begin(), lista_de_tareas.end(), 0);
+    fill(pizzas_hechas.begin(), pizzas_hechas.end(), "");
+    peperoni=0; vegetariana=0; carnes_frias=0; hawaiana=0; italiana=0; desconocida=0;
+}
+
 // -------------------- HILO CAJA --------------------
 void Caja(int modo) {
     srand(time(0));
     
     if (modo == 2) {
         // BLOQUE GRUESO
-        while (!mtx.try_lock()) {} // intentar bloquear
+        while (!mtx.try_lock()) {}
         for (int i = 0; i < 1000; ++i)
             lista_de_tareas[i] = (rand() % 5) + 1;
         mtx.unlock();
@@ -65,18 +68,28 @@ void Caja(int modo) {
                     mtx.unlock();
                     locked = true;
                 }
-            }
-        }
-    }
-}// #### FIN DE FUNCION Caja ####
+            }//fin del while
+        }//fin del for
+    }//fin del if modo
+}
 
 // -------------------- HILO COCINERO --------------------
 void Cocinero(int modo) {
     if (modo == 2) {
         // BLOQUE GRUESO
-        while (!mtx.try_lock()) {} // esperar hasta que se libere
-        for (int i = 0; i < 1000; ++i)
-            pizzas_hechas[i] = tipoPizza(lista_de_tareas[i]);
+        while (!mtx.try_lock()) {}
+        for (int i = 0; i < 1000; ++i) {
+            string pizza = tipoPizza(lista_de_tareas[i]);
+            pizzas_hechas[i] = pizza;
+
+            // Contadores
+            if (pizza == "Peperoni") peperoni++;
+            else if (pizza == "Vegetariana") vegetariana++;
+            else if (pizza == "Carnes Frias") carnes_frias++;
+            else if (pizza == "Hawaiana") hawaiana++;
+            else if (pizza == "Italiana") italiana++;
+            else desconocida++;
+        }
         mtx.unlock();
     } else {
         // BLOQUE GRANULAR
@@ -84,57 +97,99 @@ void Cocinero(int modo) {
             bool locked = false;
             while (!locked) {
                 if (mtx.try_lock()) {
-                    pizzas_hechas[i] = tipoPizza(lista_de_tareas[i]);
+                    string pizza = tipoPizza(lista_de_tareas[i]);
+                    pizzas_hechas[i] = pizza;
+
+                    if (pizza == "Peperoni") peperoni++;
+                    else if (pizza == "Vegetariana") vegetariana++;
+                    else if (pizza == "Carnes Frias") carnes_frias++;
+                    else if (pizza == "Hawaiana") hawaiana++;
+                    else if (pizza == "Italiana") italiana++;
+                    else desconocida++;
+
                     mtx.unlock();
                     locked = true;
                 }
             }
         }
     }
-}// #### FIN DE FUNCION Cocinero ####
+}
+
+// -------------------- REGISTRO DE TIEMPO --------------------
+void registrarTiempo(int modo, double tiempo) {
+    ofstream archivo("registro_tiempos.txt", ios::app);
+    if (archivo.is_open()) {
+        archivo << "[" << (modo == 1 ? "Bloque Granular" : "Bloque Grueso  ") 
+                << "] - " << tiempo << " segundos\n";
+        archivo.close();
+    }
+}
 
 // -------------------- FUNCIÓN PRINCIPAL --------------------
 int main() {
-    system("cls");
-    cout << "=============================================\n";
-    cout << "   SIMULACION DE PIZZERIA CON LOCKS\n";
-    cout << "=============================================\n";
-    cout << "Seleccione el tipo de bloqueo:\n";
-    cout << "  [1] Bloque Granular (lock por cada tarea)\n";
-    cout << "  [2] Bloque Grueso (un solo lock)\n";
-    cout << "---------------------------------------------\n";
-    cout << "Ingrese opcion: ";
-    
-    int modo;
-    cin >> modo;
-    if (modo != 1 && modo != 2) {
-        cout << "Opción inválida.\n";
-        return 0;
+    bool continuar = true;
+    while (continuar) {
+        system("cls");
+        color(2); cout << "=============================================\n";
+		color(10);cout << "   SIMULACION DE PIZZERIA CON LOCKS\n";
+		color(2); cout << "=============================================\n";
+		color(10);cout << "Seleccione el tipo de bloqueo:\n";
+        color(7); cout << "  [1] Bloque Granular (lock por cada tarea)\n";
+        	      cout << "  [2] Bloque Grueso (un solo lock)\n";
+        color(2); cout << "---------------------------------------------\n";
+        color(8); cout << "Ingrese opcion: ";
+        
+        int modo;
+        cin >> modo;
+        if (modo != 1 && modo != 2) {
+            color(12);cout << "Opción inválida."<<endl;
+            continue;
+        }
+
+        auto inicio = chrono::high_resolution_clock::now();
+
+        thread t1(Caja, modo);
+        thread t2(Cocinero, modo);
+
+        t1.join();
+        t2.join();
+
+        auto fin = chrono::high_resolution_clock::now();
+        chrono::duration<double> tiempo = fin - inicio;
+
+        // Registro en archivo
+        registrarTiempo(modo, tiempo.count());
+
+        // Mostrar resultados
+        color(2); cout << "\n=============================================\n";
+        color(10);cout << "MODO: " << (modo == 1 ? "Bloque Granular" : "Bloque Grueso") << endl;
+        color(10);cout << "Tiempo total de ejecucion: ";color(12); cout<< tiempo.count(); color(10);cout<< " segundos\n";
+        color(2); cout << "============================================="<<endl;
+
+        color(8); cout << "Cantidad de pizzas procesadas:"<<endl;
+        color(3); cout << " Peperoni:      " << peperoni << endl;
+        color(3); cout << " Vegetariana:   " << vegetariana << endl;
+        color(3); cout << " Carnes Frias:  " << carnes_frias << endl;
+        color(3); cout << " Hawaiana:      " << hawaiana << endl;
+        color(3); cout << " Italiana:      " << italiana << endl;
+        color(3); cout << " Desconocida:   " << desconocida << endl;
+
+        color(15);cout << "Primera pizza procesadas:"<<pizzas_hechas[0]<<endl;
+        /*for (int i = 0; i < 1000; ++i)
+            cout << "Orden #" << i + 1 << ": " << pizzas_hechas[i] << endl;
+		*/
+		color(15);cout << "Ultima pizza procesada:  "<<pizzas_hechas[999]<<endl;
+        color(8); cout << "¿Desea realizar otra simulación? (1 = Sí, 0 = No): "<<endl;
+        int opcion;
+        cin >> opcion;
+        if (opcion == 1) {
+            reiniciarVectores();
+        } else {
+            continuar = false;
+            color(12);cout << "Fin del programa.\n";
+        }
     }
-
-    // ----- Medir tiempo -----
-    auto inicio = chrono::high_resolution_clock::now();
-
-    thread t1(Caja, modo);
-    thread t2(Cocinero, modo);
-
-    t1.join();
-    t2.join();
-
-    auto fin = chrono::high_resolution_clock::now();
-    chrono::duration<double> tiempo = fin - inicio;
-
-    // ----- Mostrar resultados -----
-    cout << "\n=============================================\n";
-    cout << "MODO: " << (modo == 1 ? "Bloque Granular" : "Bloque Grueso") << endl;
-    cout << "Tiempo total de ejecucion: " << tiempo.count() << " segundos\n";
-    cout << "=============================================\n";
-
-    cout << "\nPrimeras 10 pizzas procesadas:\n";
-    for (int i = 0; i < 1000; ++i)
-        cout << "Orden #" << i + 1 << ": " << pizzas_hechas[i] << endl;
-
-    cout << "Fin del programa.2";
     return 0;
-}// #### FIN DE FUNCION main ####
+}
+
 
