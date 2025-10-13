@@ -15,6 +15,7 @@ ANGEL EDUARDO MUÑOZ PEREZ
 Ing COMPUTACIÓN – CUALTOS 25B
 Programación Paralela y Concurrente – Prof. Carlos Javier
 ACTIVIDAD 4: (lock) Bloque Grueso y Granular
+No
 */
 
 /*
@@ -37,11 +38,13 @@ mutex mtx;
 vector<int> lista_de_tareas(1000, 0);
 vector<string> pizzas_hechas(1000, "");
 // Contadores de pizzas
-int peperoni = 0, vegetariana = 0, carnes_frias = 0, hawaiana = 0, italiana = 0, desconocida = 0;
+int margarita = 0, peperoni = 0, vegetariana = 0, carnes_frias = 0, hawaiana = 0, italiana = 0, desconocida = 0;
 
 // -------------------- FUNCIONES --------------------
 string tipoPizza(int n) {
     switch (n) {
+    	case 0:
+    		return "Margarita";
         case 1: 
 			return "Peperoni";
         case 2: 
@@ -79,7 +82,7 @@ void Caja(int modo) {
             bool locked = false;
             while (!locked) {
                 if (mtx.try_lock()) {
-                    lista_de_tareas[i] = (rand() % 5) + 1;
+                    lista_de_tareas[i] = (rand() % 6);
                     mtx.unlock();
                     locked = true;
                 }
@@ -99,6 +102,7 @@ void Cocinero(int modo) {
 
             // Contadores
             if (pizza == "Peperoni") peperoni++;
+            else if (pizza == "Margarita") margarita++;
             else if (pizza == "Vegetariana") vegetariana++;
             else if (pizza == "Carnes Frias") carnes_frias++;
             else if (pizza == "Hawaiana") hawaiana++;
@@ -116,6 +120,7 @@ void Cocinero(int modo) {
                     pizzas_hechas[i] = pizza;
 
                     if (pizza == "Peperoni") peperoni++;
+                    else if (pizza == "Margarita") margarita++;
                     else if (pizza == "Vegetariana") vegetariana++;
                     else if (pizza == "Carnes Frias") carnes_frias++;
                     else if (pizza == "Hawaiana") hawaiana++;
@@ -145,19 +150,23 @@ int main() {
     bool continuar = true;
     while (continuar) {
         system("cls");
-        color(2); cout << "=============================================\n";
-		color(10);cout << "   SIMULACION DE PIZZERIA CON LOCKS\n";
-		color(2); cout << "=============================================\n";
-		color(10);cout << "Seleccione el tipo de bloqueo:\n";
-        color(7); cout << "  [1] Bloque Granular (lock por cada tarea)\n";
-        	      cout << "  [2] Bloque Grueso (un solo lock)\n";
-        color(2); cout << "---------------------------------------------\n";
-        color(8); cout << "Ingrese opcion: ";
+        color(2); cout << "============================================="<<endl;
+		color(10);cout << "       SIMULACION DE PIZZERIA CON LOCKS"<<endl;
+		color(2); cout << "============================================="<<endl;
+        color(3); cout << "                     MENU"<<endl;
+        color(7); cout << "     peperoni - vegetariana - carnes frias "<<endl;
+        		  cout << "              Hawaina - Italiana"<<endl;			
+        color(2); cout << "---------------------------------------------"<<endl;
+		color(10);cout << "Seleccione el tipo de bloqueo:"<<endl;
+        color(7); cout << "  [1] Bloque Granular (lock por cada tarea)"<<endl;
+        	      cout << "  [2] Bloque Grueso (un solo lock)"<<endl;
+        color(2); cout << "---------------------------------------------"<<endl;
+		color(8); cout << "Ingrese opcion: ";
         
         int modo;
         cin >> modo;
         if (modo != 1 && modo != 2) {
-            color(12);cout << "Opción inválida."<<endl;
+            color(12);cout << "Opcion invalida."<<endl;
             continue;
         }
 
@@ -182,6 +191,7 @@ int main() {
         color(2); cout << "============================================="<<endl;
 
         color(8); cout << "Cantidad de pizzas procesadas:"<<endl;
+        color(3); cout << " Margarita:     " << margarita << endl;
         color(3); cout << " Peperoni:      " << peperoni << endl;
         color(3); cout << " Vegetariana:   " << vegetariana << endl;
         color(3); cout << " Carnes Frias:  " << carnes_frias << endl;
@@ -194,7 +204,7 @@ int main() {
             cout << "Orden #" << i + 1 << ": " << pizzas_hechas[i] << endl;
 		*/
 		color(15);cout << "Ultima pizza procesada:  "<<pizzas_hechas[999]<<endl;
-        color(8); cout << "¿Desea realizar otra simulación? (1 = Sí, 0 = No): "<<endl;
+        color(8); cout << "¿Desea realizar otra simulación? (1 = Si, 0 = No): "<<endl;
         int opcion;
         cin >> opcion;
         if (opcion == 1) {
