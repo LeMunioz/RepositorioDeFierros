@@ -3,17 +3,26 @@
 #include <chrono>
 #include <mutex>
 #include <string>
+#include "colores.cpp"
+
 
 using namespace std;
 
 
 /*
+<<<<<<< HEAD
 ANGEL EDUARDO MUÃ‘OZ PEREZ
+=======
+ANGEL EDUARDO MUÑOZ PEREZ
+FABIAN EMMANUEL CANDIA VILLA
+ALEJANDRA ESTEFANIA MUÑOZ MARTINEZ
+>>>>>>> f1b5317 ([actividad5: imp]-> puse que se escoja si se muestra todo o solo la primera y ultima, ademas de colores)
 Programacion Paralela y Concurrente
 ICOMP_ CUALTOS 25b
 Prof. Carlos Javier
 */
 
+<<<<<<< HEAD
 /*
 COMO FUNCIONA EL PROGRAMA?
 	Implemento paralelismo simulando la produccion de pizzas en un local con varios trabajadores
@@ -251,3 +260,154 @@ int main() {
 
 	return 0;
 }
+=======
+// ---------------- VARIABLES GLOBALES --------------------
+struct Pizza {
+    string NombrePizza;
+    string Ingredientes[3];
+    int tamano;
+    float precio;
+    mutex EnPreparacion;
+};
+
+int numeros[2][3000];
+Pizza PizzasHechas[3000];
+
+int contadorMargarita = 0, contadorItaliana = 0, contadorMexicana = 0,
+    contadorHawaina = 0, contadorPeperoni = 0, contadorCarnesFrias = 0, contadorVegetariana = 0;
+
+mutex MutexDelContador;
+int ContadorMutuo = 0;
+
+// ---------------- FUNCIONES -----------------------------
+
+string TipoToPizza(int tipo) {
+    switch (tipo) {
+    case 0: contadorMargarita++; return "Margarita";
+    case 1: contadorItaliana++; return "Italiana";
+    case 2: contadorMexicana++; return "Mexicana";
+    case 3: contadorHawaina++; return "Hawaina";
+    case 4: contadorPeperoni++; return "Peperoni";
+    case 5: contadorCarnesFrias++; return "Carnes Frias";
+    case 6: contadorVegetariana++; return "Vegetariana";
+    default: return "Pizza no reconocida";
+    }
+}
+
+void obtenerIngredientes(int tipo, Pizza& PizzaAProcesar) {
+    switch (tipo) {
+    case 0: PizzaAProcesar.Ingredientes[0] = "Mozarella"; PizzaAProcesar.Ingredientes[1] = "Albahaca"; PizzaAProcesar.Ingredientes[2] = "Salsa de Jitomate"; break;
+    case 1: PizzaAProcesar.Ingredientes[0] = "Mozarella"; PizzaAProcesar.Ingredientes[1] = "Jitomate"; PizzaAProcesar.Ingredientes[2] = "Peperoni"; break;
+    case 2: PizzaAProcesar.Ingredientes[0] = "Mozarella"; PizzaAProcesar.Ingredientes[1] = "Chile Verde"; PizzaAProcesar.Ingredientes[2] = "Chorizo"; break;
+    case 3: PizzaAProcesar.Ingredientes[0] = "Mozarella"; PizzaAProcesar.Ingredientes[1] = "Piña"; PizzaAProcesar.Ingredientes[2] = "Pan"; break;
+    case 4: PizzaAProcesar.Ingredientes[0] = "Mozarella"; PizzaAProcesar.Ingredientes[1] = "Peperoni"; PizzaAProcesar.Ingredientes[2] = "Salsa de Tomate"; break;
+    case 5: PizzaAProcesar.Ingredientes[0] = "Mozarella"; PizzaAProcesar.Ingredientes[1] = "Peperoni"; PizzaAProcesar.Ingredientes[2] = "Salchicha"; break;
+    case 6: PizzaAProcesar.Ingredientes[0] = "Mozarella"; PizzaAProcesar.Ingredientes[1] = "Pimiento"; PizzaAProcesar.Ingredientes[2] = "Aguacate"; break;
+    default: break;
+    }
+}
+
+int getPrice(int PizzaType, int PizzaSize) {
+    int price = 120;
+    switch (PizzaType) {
+    case 0: price += 10; break;
+    case 1: price += 20; break;
+    case 2: price += 35; break;
+    case 3: price += 40; break;
+    case 4: price += 40; break;
+    case 5: price += 50; break;
+    case 6: price += 30; break;
+    }
+    switch (PizzaSize) {
+    case 0: price += 0; break;
+    case 1: price += 10; break;
+    case 2: price += 20; break;
+    }
+    return price;
+}
+
+void Cocinero(string nombre, bool mostrarTodas) {
+    while (true) {
+        int LocalCounter = 0;
+        {
+            lock_guard<mutex> Counter_Lock(MutexDelContador);
+            if (ContadorMutuo >= 3000) break;
+            LocalCounter = ContadorMutuo++;
+        }
+
+        lock_guard<mutex> Pizza_Lock(PizzasHechas[LocalCounter].EnPreparacion);
+
+        PizzasHechas[LocalCounter].NombrePizza = TipoToPizza(numeros[0][LocalCounter]);
+        PizzasHechas[LocalCounter].tamano = numeros[1][LocalCounter];
+        obtenerIngredientes(numeros[0][LocalCounter], PizzasHechas[LocalCounter]);
+        PizzasHechas[LocalCounter].precio = getPrice(numeros[0][LocalCounter], numeros[1][LocalCounter]);
+
+        // Mostrar información según opción
+        if (mostrarTodas || LocalCounter == 0 || LocalCounter == 2999) {
+        	color(10);
+            cout << "Cocinero " << nombre << " preparo pizza " << LocalCounter + 1;
+            	color(3);
+                 cout<< " - Tipo: " << PizzasHechas[LocalCounter].NombrePizza
+                 << " | Tamaño: " << PizzasHechas[LocalCounter].tamano
+                 << " | Precio: " << PizzasHechas[LocalCounter].precio << endl;
+        }
+    }
+}
+
+void Caja() {
+    srand(time(NULL));
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 3000; j++) {
+            numeros[i][j] = rand() % 7;
+        }
+    }
+}
+
+int main() {
+	color(3);
+    cout << "Desea ver todas las pizzas mientras se hacen? (1 = si, 0 = solo primera y ultima): ";
+    int opcion;
+    cin >> opcion;
+    bool mostrarTodas = (opcion == 1);
+
+    Caja();
+
+    auto start = chrono::high_resolution_clock::now();
+
+    thread t1(Cocinero, "Emmanuel", mostrarTodas);
+    thread t2(Cocinero, "Fabian", mostrarTodas);
+    thread t3(Cocinero, "Munioz", mostrarTodas);
+    thread t4(Cocinero, "Javier", mostrarTodas);
+
+    t1.join();
+    t2.join();
+    t3.join();
+    t4.join();
+
+    auto end = chrono::high_resolution_clock::now();
+    chrono::duration<double> elapsed = end - start;
+
+	color(2);
+    cout << "\nPizzas Preparadas:" << endl;
+    color(5);
+    cout << "Margarita: " << contadorMargarita << endl;
+    color(13);
+    cout << "Italiana: " << contadorItaliana << endl;
+    color(12);
+    cout << "Mexicana: " << contadorMexicana << endl;
+    color(6);
+    cout << "Hawaina: " << contadorHawaina << endl;
+    color(4);
+    cout << "Peperoni: " << contadorPeperoni << endl;
+    color(14);
+    cout << "Carnes Frias: " << contadorCarnesFrias << endl;
+    color(10);
+    cout << "Vegetariana: " << contadorVegetariana << endl;
+
+	color(3);
+    cout << "\nTiempo total de preparacion: " << elapsed.count() << " segundos." << endl;
+
+    return 0;
+}
+
+>>>>>>> f1b5317 ([actividad5: imp]-> puse que se escoja si se muestra todo o solo la primera y ultima, ademas de colores)
