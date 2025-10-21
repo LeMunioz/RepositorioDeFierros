@@ -19,20 +19,21 @@ PROBLEMA DE LOS FILOSOFOS_ Usando memoria compartida y bloqueos
 */
 
 /*
-	El problema de los filosofos consiste en que todos puedan comer o pensar,
-		para comer deben tomar los 2 palillos que tienen en frente, si alguno
-		ya esta ocupado, deben esperar a que su vecino termine.
+	El problema de los filosofos consiste en 5 filosofos se sientan a comer con
+		5 palillos en la mesa, todos deben poder comer y pensar de forma alterna
+		con la condicion de que solo pueden comer tomando 2 palillos, se debe 
+		buscar una forma en que todos ppuedan alternar su comiendo y su pensando
+		sin atascarse 
 COMO FUNCIONA?
-	Mi programa lo que hace es tomar los palillos como un arreglo, y cada
-		filosofo es un proceso, cuando debe tomar palillos: primero checa que
-		el izquierdo este desocupado, si lo esta lo toma y ahora ve el derecho,
-		si tambien esta hace un lock a ambos y come 6 segundos para luego soltarlos,
-		si el derecho no esta desocupado solo hace lock al izquierdo y espera
-		su tiempo y vuelve a checar. 
-	Por default los filosofos se inicializan durante cada paso del ciclo con los estados
-		(el texto que describe su accion actual) y su ColorFilosofo[id] (un color para
-		distinguir el estado mas facil) con el valor de "pensando" cuando logran tomar
-		ambos palillos cambian estos valores a los de "comiendo"
+	Mi program para manejar el problema, usa los palillos en forma de arreglo
+		como recurso compartido y cada uno de los filosofos es un hilo donde el comer 
+		seran los procesos concurrentes, donde cada uno tiene asignado dos pocisiones 
+		del arreglo de palillos. El filosofo intenta tomar un palillo si esta 
+		desocupado, ve si el otro palillo esta desocupado, si no esta, se espera
+		tantito, si ambos estan desocupados este realiza el proceso de comer.
+		Aqui comer hace que cambie de color del filosofo > ColorFilosofo[id]
+		y tambien hace que lo escriba implicitamente > estado[id] y se queda en ese
+		estado durante 4 a 6 segundos. Despues desbloquea el espacio y el ciclo continua.
 	Se necesita de libreria de "colores.cpp" que tiene funciones como:
 		color(int); gotoxy(int,int); & ajustarConsola(int,int); 
 		Siendo todas funciones de <windows.h> 		
@@ -51,6 +52,7 @@ string estado[5] = {"pensando","pensando","pensando","pensando","pensando"};
 
 // Control de ejecución
 atomic<bool> ejecutando(true); //para que no haya condicion de carrera en esta variable
+
 
 //FUNCION PARA DIBUJAR A LOS FILOSOFOS (FrontEnd xd)
 void dibujar() {
@@ -126,8 +128,8 @@ void dibujar() {
     gotoxy(6, 11); cout << "_____";
     
     //Contornos  (margen)
-    gotoxy(1,3);color(1);cout<<"=========================================" << endl;color(15);//contorno superior
-	gotoxy(1,19);color(1);cout<<"=========================================" << endl;color(15);//contorno inferior
+    gotoxy(1,3);color(1);cout<<"===========================================" << endl;color(15);//contorno superior
+	gotoxy(1,19);color(1);cout<<"===========================================" << endl;color(15);//contorno inferior
 	for(int margen=3; margen <20; margen++){  //contorno derecho
     	gotoxy(20, margen);color(1);cout<<"|";
 	}
@@ -159,7 +161,7 @@ void filosofo(int id) {
             dibujar();
         }
         this_thread::sleep_for(chrono::seconds(1));
-
+        
         // Intentar tomar palillos
         while (true) {
             if (palillos[palilloIzq].try_lock()) {
@@ -170,9 +172,11 @@ void filosofo(int id) {
                         ColorFilosofo[id] = comiendo;
                         estado[id] = "comiendo";
                         dibujar();
+                    	
                     }
-                 
-                    this_thread::sleep_for(chrono::seconds(4 + (rand() % 3))); //para que se quede comiendo  un numero random entre 4 y 6 segundos
+                 	
+                    this_thread::sleep_for(chrono::seconds(1 +(rand() % 6))); //para que se quede comiendo  un numero random entre 4 y 6 segundos
+                    gotoxy(24,14);cout<<time;
                     
                     // Soltar palillos
                     palillos[palilloDer].unlock();
@@ -190,7 +194,7 @@ void filosofo(int id) {
 // MAIN
 int main(){
 	ajustarConsola(20, 90);
-	srand(time(NULL)); 
+	srand(time(NULL));  
 																													
     gotoxy(2,5);color(5);cout <<"=================================================================";
 	gotoxy(6,6);color(5);cout <<" __________.__.__                      _____             ";
@@ -198,10 +202,10 @@ int main(){
 	gotoxy(6,8);color(5);cout <<"|   ___)  |  |  |  /  _ l/  ___/  _ l   __l/  _ l/  ___/";
 	gotoxy(6,9);color(5);cout <<"|   l     |  |  |_(  <_> )___ (  <_> )  | (  <_> )___ l ";
 	gotoxy(6,10);color(5);cout<<"l__ /     |__|____/l____/____  >____/|__|  l____/____  >";
-	gotoxy(6,11);color(5);cout<<"   l/                         l/                     l/ ";
+	gotoxy(6,11);color(5);cout<<"  l/                         l/                      l/ ";
 	gotoxy(6,12);color(6);cout<<"                      By Munoz                           ";
 	gotoxy(2,13);color(5);cout<<"================================================================"; gotoxy(1,26);
-	std::this_thread::sleep_for(std::chrono::seconds(7));
+	std::this_thread::sleep_for(std::chrono::seconds(6));
 
 	// Dibujo inicial
 	{

@@ -1,0 +1,21 @@
+
+[Bloque Granular] - 0.002275 segundos
+[Bloque Granular] - 0.0032175 segundos
+[Bloque Granular] - 0.003379 segundos
+[Bloque Grueso  ] - 0.0012403 segundos
+[Bloque Grueso  ] - 0.0012445 segundos
+[Bloque Grueso  ] - 0 segundos
+[Bloque Granular] - 0.0035779 segundos
+[Bloque Granular] - 0.0029985 segundos
+[Bloque Grueso  ] - 0.0009777 segundos
+[Bloque Grueso  ] - 0.0009997 segundos
+[Bloque Granular] - 0.00329 segundos
+[Bloque Grueso  ] - 0 segundos
+[Bloque Granular] - 0.0032002 segundos
+[Bloque Grueso  ] - 0.001001 segundos
+[Bloque Granular] - 0.0041472 segundos
+[Bloque Granular] - 0.0043442 segundos
+[Bloque Granular] - 0.0040986 segundos
+[Bloque Grueso  ] - 0.0013747 segundos
+[Bloque Granular] - 0.0023858 segundos
+[Bloque Granular] - 0.003122 segundos

@@ -11,9 +11,9 @@
 using namespace std;
 
 /*
-ANGEL EDUARDO MUÑOZ PEREZ
-Ing COMPUTACIÓN – CUALTOS 25B
-Programación Paralela y Concurrente – Prof. Carlos Javier
+ANGEL EDUARDO MUï¿½OZ PEREZ
+Ing COMPUTACIï¿½N ï¿½ CUALTOS 25B
+Programaciï¿½n Paralela y Concurrente ï¿½ Prof. Carlos Javier
 ACTIVIDAD 4: (lock) Bloque Grueso y Granular
 No
 */
@@ -36,6 +36,8 @@ El programa implementa dos hilos, uno es Caja(): que se encarga
 // -------------------- VARIABLES GLOBALES --------------------
 mutex mtx; 
 vector<int> lista_de_tareas(1000, 0);
+
+
 vector<string> pizzas_hechas(1000, "");
 // Contadores de pizzas
 int margarita = 0, peperoni = 0, vegetariana = 0, carnes_frias = 0, hawaiana = 0, italiana = 0, desconocida = 0;
@@ -145,7 +147,7 @@ void registrarTiempo(int modo, double tiempo) {
     }
 }
 
-// -------------------- FUNCIÓN PRINCIPAL --------------------
+// -------------------- FUNCIï¿½N PRINCIPAL --------------------
 int main() {
     bool continuar = true;
     while (continuar) {
@@ -204,7 +206,7 @@ int main() {
             cout << "Orden #" << i + 1 << ": " << pizzas_hechas[i] << endl;
 		*/
 		color(15);cout << "Ultima pizza procesada:  "<<pizzas_hechas[999]<<endl;
-        color(8); cout << "¿Desea realizar otra simulación? (1 = Si, 0 = No): "<<endl;
+        color(8); cout << "ï¿½Desea realizar otra simulaciï¿½n? (1 = Si, 0 = No): "<<endl;
         int opcion;
         cin >> opcion;
         if (opcion == 1) {

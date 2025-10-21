@@ -58,13 +58,16 @@ void color(int color){
 void ajustarConsola(int ancho, int alto) {
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 
-    // Ajustar el tamaño del buffer de pantalla
     COORD bufferSize;
-    bufferSize.X = ancho;
-    bufferSize.Y = alto;
+    bufferSize.X = static_cast<SHORT>(ancho);
+    bufferSize.Y = static_cast<SHORT>(alto);
     SetConsoleScreenBufferSize(hOut, bufferSize);
 
-    // Ajustar la ventana visible
-    SMALL_RECT windowSize = {0, 0, ancho - 1, alto - 1};
+    SMALL_RECT windowSize;
+    windowSize.Left = 0;
+    windowSize.Top = 0;
+    windowSize.Right = static_cast<SHORT>(ancho - 1);
+    windowSize.Bottom = static_cast<SHORT>(alto - 1);
     SetConsoleWindowInfo(hOut, TRUE, &windowSize);
+
 }
