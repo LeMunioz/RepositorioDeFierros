@@ -21,6 +21,19 @@ Programacion Paralela y Concurrente
 ICOMP_ CUALTOS 25b
 Prof. Carlos Javier
 */
+/* COMO FUNCIONA EL PROGRAMA? 
+	Implemento paralelismo simulando la produccion de pizzas en un local con varios
+	trabajadores Para lograr esto hay una funcion > Caja() la cual se encargara de crear 
+	la lista de 10000 pizzas que en este caso seran representadas en una matriz > int<numeros>. 
+	donde cada columna es un numero para el tipo de pizza y el tamaño de la misma Despues se 
+	realizan un conjunto de n hilos > Cocinero() que seran quienes procesen las ordenes y se 
+	encarguen de: 
+	1) A partir del numero, determinar el tipo de pizza que es 
+	2) Asignar los ingredientes que llevan 
+	3) Calcular el precio de la misma 
+	4) Llevar un contador de la cantidad de pizzas hechas de cada tipo todo esto sera introducido 
+		en la estructura > struct pizza{} 
+*/
 
 <<<<<<< HEAD
 /*
@@ -296,13 +309,34 @@ string TipoToPizza(int tipo) {
 
 void obtenerIngredientes(int tipo, Pizza& PizzaAProcesar) {
     switch (tipo) {
-    case 0: PizzaAProcesar.Ingredientes[0] = "Mozarella"; PizzaAProcesar.Ingredientes[1] = "Albahaca"; PizzaAProcesar.Ingredientes[2] = "Salsa de Jitomate"; break;
-    case 1: PizzaAProcesar.Ingredientes[0] = "Mozarella"; PizzaAProcesar.Ingredientes[1] = "Jitomate"; PizzaAProcesar.Ingredientes[2] = "Peperoni"; break;
-    case 2: PizzaAProcesar.Ingredientes[0] = "Mozarella"; PizzaAProcesar.Ingredientes[1] = "Chile Verde"; PizzaAProcesar.Ingredientes[2] = "Chorizo"; break;
-    case 3: PizzaAProcesar.Ingredientes[0] = "Mozarella"; PizzaAProcesar.Ingredientes[1] = "Piña"; PizzaAProcesar.Ingredientes[2] = "Pan"; break;
-    case 4: PizzaAProcesar.Ingredientes[0] = "Mozarella"; PizzaAProcesar.Ingredientes[1] = "Peperoni"; PizzaAProcesar.Ingredientes[2] = "Salsa de Tomate"; break;
-    case 5: PizzaAProcesar.Ingredientes[0] = "Mozarella"; PizzaAProcesar.Ingredientes[1] = "Peperoni"; PizzaAProcesar.Ingredientes[2] = "Salchicha"; break;
-    case 6: PizzaAProcesar.Ingredientes[0] = "Mozarella"; PizzaAProcesar.Ingredientes[1] = "Pimiento"; PizzaAProcesar.Ingredientes[2] = "Aguacate"; break;
+    case 0: PizzaAProcesar.Ingredientes[0] = "Mozarella";
+	 		PizzaAProcesar.Ingredientes[1] = "Albahaca"; 
+			PizzaAProcesar.Ingredientes[2] = "Salsa de Jitomate"; 
+			break;
+    case 1: PizzaAProcesar.Ingredientes[0] = "Mozarella"; 
+			PizzaAProcesar.Ingredientes[1] = "Jitomate"; 
+			PizzaAProcesar.Ingredientes[2] = "Peperoni"; 
+			break;
+    case 2: PizzaAProcesar.Ingredientes[0] = "Mozarella"; 
+			PizzaAProcesar.Ingredientes[1] = "Chile Verde"; 
+			PizzaAProcesar.Ingredientes[2] = "Chorizo"; 
+			break;
+    case 3: PizzaAProcesar.Ingredientes[0] = "Mozarella"; 
+			PizzaAProcesar.Ingredientes[1] = "Piña"; 
+			PizzaAProcesar.Ingredientes[2] = "Pan"; 
+			break;
+    case 4: PizzaAProcesar.Ingredientes[0] = "Mozarella"; 
+			PizzaAProcesar.Ingredientes[1] = "Peperoni"; 
+			PizzaAProcesar.Ingredientes[2] = "Salsa de Tomate"; 
+			break;
+    case 5: PizzaAProcesar.Ingredientes[0] = "Mozarella"; 
+			PizzaAProcesar.Ingredientes[1] = "Peperoni"; 
+			PizzaAProcesar.Ingredientes[2] = "Salchicha"; 
+			break;
+    case 6: PizzaAProcesar.Ingredientes[0] = "Mozarella"; 
+			PizzaAProcesar.Ingredientes[1] = "Pimiento"; 
+			PizzaAProcesar.Ingredientes[2] = "Aguacate"; 
+			break;
     default: break;
     }
 }
