@@ -11,11 +11,12 @@ using namespace std;
 
 /*
 <<<<<<< HEAD
-ANGEL EDUARDO MUÑOZ PEREZ
+ANGEL EDUARDO MUÃ‘OZ PEREZ
 =======
-ANGEL EDUARDO MU�OZ PEREZ
+ANGEL EDUARDO MUÑOZ PEREZ
 FABIAN EMMANUEL CANDIA VILLA
-ALEJANDRA ESTEFANIA MU�OZ MARTINEZ
+ALEJANDRA ESTEFANIA MUÑOZ MARTINEZ
+Alcalá Vallejo Emmanuel
 >>>>>>> f1b5317 ([actividad5: imp]-> puse que se escoja si se muestra todo o solo la primera y ultima, ademas de colores)
 Programacion Paralela y Concurrente
 ICOMP_ CUALTOS 25b
@@ -25,7 +26,7 @@ Prof. Carlos Javier
 	Implemento paralelismo simulando la produccion de pizzas en un local con varios
 	trabajadores Para lograr esto hay una funcion > Caja() la cual se encargara de crear 
 	la lista de 10000 pizzas que en este caso seran representadas en una matriz > int<numeros>. 
-	donde cada columna es un numero para el tipo de pizza y el tama�o de la misma Despues se 
+	donde cada columna es un numero para el tipo de pizza y el tamaño de la misma Despues se 
 	realizan un conjunto de n hilos > Cocinero() que seran quienes procesen las ordenes y se 
 	encarguen de: 
 	1) A partir del numero, determinar el tipo de pizza que es 
@@ -41,7 +42,7 @@ COMO FUNCIONA EL PROGRAMA?
 	Implemento paralelismo simulando la produccion de pizzas en un local con varios trabajadores
 	Para lograr esto hay una funcion > Caja() la cual se encargara de crear la lista de 10000
 		pizzas que en este caso seran representadas en una matriz > int<numeros>. donde cada columna
-		es un numero para el tipo de pizza y el tamaño de la misma
+		es un numero para el tipo de pizza y el tamaÃ±o de la misma
 	Despues se realizan un conjunto de n hilos > Cocinero() que seran quienes procesen las
 		ordenes y se encarguen de:
 		
@@ -54,7 +55,7 @@ COMO FUNCIONA EL PROGRAMA?
 */
 
 // -------------- VARIABLES GLOBALES --------------------
-//Estructura que contiene todos los datos de las pizzas, Estas pizzas contienen un Mutex para ser usados en un bloqueo más fino
+//Estructura que contiene todos los datos de las pizzas, Estas pizzas contienen un Mutex para ser usados en un bloqueo mÃ¡s fino
 struct Pizza {
 	string NombrePizza;
 	string Ingredientes[3];
@@ -63,9 +64,9 @@ struct Pizza {
 	mutex EnPreparacion;
 };
 
-//Numeros contiene el tipo y el tamaño de la pizza, está lleno de Números aleatorios del 0 al 7 en ambas columnas
+//Numeros contiene el tipo y el tamaÃ±o de la pizza, estÃ¡ lleno de NÃºmeros aleatorios del 0 al 7 en ambas columnas
 int numeros[2][10000];
-//PizzasHechas contiene todas las Pizzas que están pendientes de hacer, y al acabar la ejecución, todas las pizzas que se han hecho
+//PizzasHechas contiene todas las Pizzas que estÃ¡n pendientes de hacer, y al acabar la ejecuciÃ³n, todas las pizzas que se han hecho
 Pizza PizzasHechas[10000];
 
 //Contabiliza todas las pizzas que han sido creadas hasta ahora, y de que tipo son
@@ -93,7 +94,7 @@ string TipoToPizza(int tipo) {
 	}
 }
 
-//Obtiene los Ingredientes de la Pizza en base a su típo, y modifica la Pizza que se pase de argumento para añadirlos
+//Obtiene los Ingredientes de la Pizza en base a su tÃ­po, y modifica la Pizza que se pase de argumento para aÃ±adirlos
 void obtenerIngredientes(int tipo, Pizza& PizzaAProcesar) {
 	//Se opera con el Alias de una pizza existente para modificarla de forma directa
 
@@ -139,7 +140,7 @@ void obtenerIngredientes(int tipo, Pizza& PizzaAProcesar) {
 	}
 }
 
-//Regresa el costo base de la pizza en base a su tipo y su tamaño
+//Regresa el costo base de la pizza en base a su tipo y su tamaÃ±o
 int getPrice(int PizzaType, int PizzaSize) {
 
 	int price = 120;
@@ -175,24 +176,24 @@ void Cocinero(string nombre){
 
 	string Name = nombre;
 
-	//Ciclo dónde sucede todo el trabajo de obtención de Pizzas
+	//Ciclo dÃ³nde sucede todo el trabajo de obtenciÃ³n de Pizzas
 	while (true) {
 
 		//Bloqueamos el Mutex del Contador, ya que cada cocinero va a tomar un turno, y aumentar el Contador el contador mutuo en 1
 		lock_guard<mutex> Counter_Lock(MutexDelContador);
 
-			//Creamos una variable de turno Actual cuyo valor es: El valor actual del contador grupal, y después aumentamos el contador en 1
+			//Creamos una variable de turno Actual cuyo valor es: El valor actual del contador grupal, y despuÃ©s aumentamos el contador en 1
 			int LocalCounter = ContadorMutuo++;
 
 
-			//Si ve que su turno es mayor a 10000, termina la ejecución del ciclo y su trabajo cómo cocinero
+			//Si ve que su turno es mayor a 10000, termina la ejecuciÃ³n del ciclo y su trabajo cÃ³mo cocinero
 			if (ContadorMutuo > 10000) {
 				break;
 			}
 		
 
-		//Entramos a un segundo mutex, bloqueando la pizza en el índice del turno del hilo actual
-		//Debido a que salimos del dominio del primer mutex, este automáticamente se libera para dar paso a otro hilos a usarlo.
+		//Entramos a un segundo mutex, bloqueando la pizza en el Ã­ndice del turno del hilo actual
+		//Debido a que salimos del dominio del primer mutex, este automÃ¡ticamente se libera para dar paso a otro hilos a usarlo.
 		lock_guard<mutex> Pizza_Lock(PizzasHechas[LocalCounter].EnPreparacion);
 
 				cout << "El Contador actual de " << Name << " es: " << LocalCounter + 1 << endl;
@@ -204,7 +205,7 @@ void Cocinero(string nombre){
 				cout << "Tipo de Pizza: " << PizzasHechas[LocalCounter].NombrePizza << endl;
 
 				
-				//Obtenemos los ingredientes de la pizza actual, pasandose así mismo apra su modificación directa
+				//Obtenemos los ingredientes de la pizza actual, pasandose asÃ­ mismo apra su modificaciÃ³n directa
 				obtenerIngredientes(numeros[0][LocalCounter], PizzasHechas[LocalCounter]);
 
 				for (string ingrediente : PizzasHechas[LocalCounter].Ingredientes) {
@@ -217,19 +218,19 @@ void Cocinero(string nombre){
 				cout << "Precio: " << PizzasHechas[LocalCounter].precio << endl;
 
 
-				//Obtenemos el tamaño de la Pizza
+				//Obtenemos el tamaÃ±o de la Pizza
 				PizzasHechas[LocalCounter].tamano = numeros[1][LocalCounter];
 				
 				cout<< "Tamanio: " << PizzasHechas[LocalCounter].tamano << endl;
 
 
-				//Hemos terminado con la pizza actual, volvemos al ciclo, y tomamos otro número para trabajar en esa otra pizza
+				//Hemos terminado con la pizza actual, volvemos al ciclo, y tomamos otro nÃºmero para trabajar en esa otra pizza
 				cout << Name << " Ha terminado la pizza numero: " << LocalCounter + 1 << "\n" << endl;
 			
 	}	
 }
 
-//inicializa el array de 10000 tamaños y tipos de pizza para empezar a trabajar
+//inicializa el array de 10000 tamaÃ±os y tipos de pizza para empezar a trabajar
 void Caja() {
 
 	srand(time(NULL));
@@ -322,7 +323,7 @@ void obtenerIngredientes(int tipo, Pizza& PizzaAProcesar) {
 			PizzaAProcesar.Ingredientes[2] = "Chorizo"; 
 			break;
     case 3: PizzaAProcesar.Ingredientes[0] = "Mozarella"; 
-			PizzaAProcesar.Ingredientes[1] = "Pi�a"; 
+			PizzaAProcesar.Ingredientes[1] = "Piña"; 
 			PizzaAProcesar.Ingredientes[2] = "Pan"; 
 			break;
     case 4: PizzaAProcesar.Ingredientes[0] = "Mozarella"; 
@@ -376,13 +377,13 @@ void Cocinero(string nombre, bool mostrarTodas) {
         obtenerIngredientes(numeros[0][LocalCounter], PizzasHechas[LocalCounter]);
         PizzasHechas[LocalCounter].precio = getPrice(numeros[0][LocalCounter], numeros[1][LocalCounter]);
 
-        // Mostrar informaci�n seg�n opci�n
+        // Mostrar información según opción
         if (mostrarTodas || LocalCounter == 0 || LocalCounter == 2999) {
         	color(10);
             cout << "Cocinero " << nombre << " preparo pizza " << LocalCounter + 1;
             	color(3);
                  cout<< " - Tipo: " << PizzasHechas[LocalCounter].NombrePizza
-                 << " | Tama�o: " << PizzasHechas[LocalCounter].tamano
+                 << " | Tamaño: " << PizzasHechas[LocalCounter].tamano
                  << " | Precio: " << PizzasHechas[LocalCounter].precio << endl;
         }
     }
