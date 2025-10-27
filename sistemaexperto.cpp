@@ -53,13 +53,13 @@ int usuarioVector[10] = {0,0,20,0,0,0,3,1,0,1}; // Inicializacion por defecto
 // ----- FUNCIONES AUXILIARES ------
 // ----------------------------------------------------------------
 //Sacar al personaje mas cercano de las 9 dimensiones usando una contatenacion de hipotenusas
-//los ejes 0, 1 y 8 les aumento el peso porque son diferencias muy marcada que ayudan a distinguir mejor el personaje 
+//los ejes 0, 1, 8 y 10 les aumento el peso porque son diferencias muy marcada que ayudan a distinguir mejor el personaje 
 double distanciaEuclidiana(const int a[10], const int b[10]) {
     double suma = 0;
     for (int i = 0; i < 9; i++) {
     	
         double peso = 1.0; // peso normal
-        if (i == 0) peso = 5.0;  // Rol
+        if (i == 0) peso = 5.0;   // Rol
         if (i == 1) peso = 10.0;  // Origen 
 		if (i == 8) peso = 2.0;	  // Pelo
 		if (i == 10)peso = 10.0;  // Sexo
@@ -125,7 +125,7 @@ void inicializarBase() {
     basePersonajes.push_back({"Tony Tony Chopper",{0,4,17,1,1,0,6,2,2,0}});
     basePersonajes.push_back({"Nico Robin",		{0,0,30,1,3,4,4,2,0,2}});
     basePersonajes.push_back({"Franky",			{0,0,34,0,0,1,5,4,4,0}});
-    basePersonajes.push_back({"Brook",			{0,0,90,1,3,1,5,3,0,0}});
+    basePersonajes.push_back({"Brook",			{0,0,80,1,3,1,5,3,0,0}});
     basePersonajes.push_back({"Jimbe",			{0,1,45,3,0,2,5,1,0,0}});
     
     //MARINES
@@ -190,6 +190,7 @@ void inicializarBase() {
 	basePersonajes.push_back({"Mr 3 Galdino.",	     {0,0,37,1,3,0,2,7,0,0}});
 	basePersonajes.push_back({"Dr. Hiruluk",         {3,0,50,0,0,1,6,1,7,0}});
 	basePersonajes.push_back({"Kosa",                {2,0,27,0,0,3,5,0,2,0}});
+	basePersonajes.push_back({"Nefertari D. Cobra",	 {3,0,50,0,0,2,6,0,7,0}});
 	basePersonajes.push_back({"Mr. 2 Bon Clay",      {0,0,30,1,3,1,5,3,0,0}});
 	basePersonajes.push_back({"Pell",	 	  	     {3,0,27,1,1,3,5,1,1,0}});
 	basePersonajes.push_back({"Pestañas",			 {3,4,20,0,0,1,3,7,1,0}});
@@ -221,7 +222,7 @@ void inicializarBase() {
 	// Thriller bark
 	basePersonajes.push_back({"Perona",              {3,0,25,1,3,5,3,7,9,2}});
 	basePersonajes.push_back({"Dr. Hogback",         {3,0,45,0,0,4,0,2,4,0}});
-	// Sabaody/Impel down
+	// MarineFord
 	basePersonajes.push_back({"Duval",               {0,0,32,0,0,1,4,6,6,0}});
 	basePersonajes.push_back({"Trafalgar D. Water Law",{0,0,26,2,3,4,4,6,0,0}});
 	basePersonajes.push_back({"Bepo",              	 {0,4,22,3,0,1,6,3,7,0}});
@@ -300,19 +301,19 @@ void dibujarlogo(){
 		gotoxy(i,6); cout<<"=";
 	}
 	//contorno derecho
-	for(int i=7; i <26; i++){
+	for(int i=7; i <25; i++){
 		color(3); 
 		gotoxy(98,i);cout<<"|";
 	}
 	//contorno izquierdo
-	for(int i=7; i <26; i++){
+	for(int i=7; i <25; i++){
 		color(3); 
 		gotoxy(0,i);cout<<"|";
 	}
 	//contorno inferior
 	for(int i=0; i <98; i++){
 		color(3);
-		gotoxy(i,25); cout<<"=";
+		gotoxy(i,24); cout<<"=";
 	}
 	color(15);  	                                                               	
 }
@@ -374,13 +375,13 @@ void hacerPreguntas() {
     usuarioVector[5] = leerOpcion(0, 5);
     system("cls");
 
-    // 6. Bondad (simplificado)
+    // 6. Bondad 
     dibujarlogo();
     gotoxy(1,7); color(2); cout << "6?? ¿El personaje es bueno, malo o neutral?";
     gotoxy(1,8); color(10); cout << "[0] Malo  [1] Neutral  [2] Bueno";
     gotoxy(1,9); color(15); cout<< " >";
     opcion = leerOpcion(0, 2);
-    switch (opcion) {
+    switch (opcion) { //lo pone en pocisiones medias (la segunda pocision, en medio o la penultima pocision)
         case 0: usuarioVector[6] = 1; break;
         case 1: usuarioVector[6] = 3; break;
         case 2: usuarioVector[6] = 5; break;
@@ -389,13 +390,13 @@ void hacerPreguntas() {
 				      
     // 7. Motivación
     dibujarlogo();
-    //[7] -> Motivacion (0=Justicia/deber, 1=Proteccion/ayudar, 2=conocimiento/ciencia, 3=lealtad o amor, 4=Aventura/libertad, 5=sueño individual, 6=Venganza/poder, 7=Sin motivacion clara) 
     gotoxy(1,7); color(2); cout << "7?? ¿Que lo motiva principalmente?";
     gotoxy(1,8); color(10);
-    cout << "[0] la moral/deber  [1] sus amigos y la aventura  [2] sueños propios o de si mismo   [3] no se";
+    cout << "[0] moral/bien colectivo  [1] sus amigos y la aventura  [2] sueños propios o de si mismo   [3] no se";
     gotoxy(1,9);color(15); cout << "> ";
     opcion=leerOpcion(0, 3);
     switch(opcion){
+    	//[7] -> (0=Justicia/deber, 1=Proteccion/ayudar, 2=conocimiento/ciencia, 3=lealtad o amor, 4=Aventura/libertad, 5=sueño individual, 6=Venganza/poder, 7=Sin motivacion clara) 
     	case 0: usuarioVector[7]=0; break;
     	case 1: usuarioVector[7]=3; break;
     	case 2: usuarioVector[7]=5; break;
@@ -411,28 +412,28 @@ void hacerPreguntas() {
     gotoxy(1,9); color(15); cout<< " >";
     opcion = leerOpcion(1,3);
     switch(opcion){
-    	case 1: usuarioVector[8]=1; break;
-    	case 2: usuarioVector[8]=6; break;
-    	case 3: usuarioVector[8]=8; break;
+    	case 1: usuarioVector[8]=1; break; //pelo cafe (media)
+    	case 2: usuarioVector[8]=6; break; //pelo rubio (media)
+    	case 3: usuarioVector[8]=8; break; //pelon
 	}
     system("cls");
     
-    if (usuarioVector[8] == 6) {
+    if (usuarioVector[8] == 6) { //si tiene pelo claro, buscamos el tono exacto
         system("cls");
         dibujarlogo();
         gotoxy(1,7); color(2); cout << "¿De que color es su cabello?";
-        gotoxy(1,8); color(10); cout << "[1] Blanco/Gris [2] Rubio [3] Naranja [4] Rosa [5] Azul [6] Rojo";
+        gotoxy(1,8); color(10); cout << "[1] Blanco/Gris [2] Rubio [3] Naranja [4] Rosa [5] Azul [6] Verde";
         gotoxy(1,9); color(15); cout<< " >";
-        opcion = leerOpcion(1, 5);
+        opcion = leerOpcion(1, 6);
         switch (opcion){
         	case 1: usuarioVector[8]=7; break;
         	case 2: usuarioVector[8]=6; break;
         	case 3: usuarioVector[8]=5; break;
         	case 4: usuarioVector[8]=9; break;
         	case 5: usuarioVector[8]=4; break;
-        	case 6: usuarioVector[8]=3; break;
+        	case 6: usuarioVector[8]=2; break;
 		}
-	}else if (usuarioVector[8] == 1){
+	}else if (usuarioVector[8] == 1){ //si tiene pelo oscuro buscamos tono exacto
 		system("cls");
         dibujarlogo();
         gotoxy(1,7); color(2); cout << "¿De que color es su cabello?";
@@ -451,31 +452,29 @@ void hacerPreguntas() {
     }
     system("cls");
 
-	// 9. Preguntas aleatorias
+	// 9. PREGUNTAS ALEATORIAS
 	srand(time(0));
-	
-	// PREGUNTAS ALEATORIAS
 	
 	// número de preguntas que se harán (1 a 3)
 	int numPreguntas = 1 + rand() % 3; 
-	
+	gotoxy(0,1);color(7);cout<<numPreguntas;
 	// vector de conjunto de preguntas que revolveremos para ver cuales hace de forma alazar
 	vector<int> indices = {0, 1, 2, 3, 4};
 	random_shuffle(indices.begin(), indices.end());
 	
-	// ejecutamos solo las primeras preguntas de indice
+	// ejecutamos solo las primeras preguntas de indice ya revuelto
 	for (int i = 0; i < numPreguntas; i++) {
-		gotoxy(1,19);color(8);cout<<numPreguntas;
 	    int aleatoria = indices[i];
 	    switch (aleatoria) {
-	        case 0://Calibrar su motivacion/sueño
+	        case 0://PREGUNTA: calibrar sus motivaciones
 	        	system("cls");
 	            dibujarlogo();
 	            gotoxy(1,7); color(2); cout << "¿Que impulsa más sus acciones?";
-	            switch (usuarioVector[7]){
-	            	case 0:
+	            switch (usuarioVector[7]){ 
+	            	case 0: //el puntero esta en 0, cuando preguntaron sus motivaciones dijeron justicia o deber
 	            		gotoxy(1,8);color(10);
 	            		cout<<" [1] la justicia y el deber   [2]  Proteccion/ ayudar a los demas   [3] Descubrimiento o ciencia";
+	            		gotoxy(1,9); color(15); cout<< " >";
 	            		opcion=leerOpcion(1,3);
 	            		switch(opcion){
 	            			case 1: usuarioVector[7]=0; break;
@@ -483,9 +482,10 @@ void hacerPreguntas() {
 	            			case 3: usuarioVector[7]=2; break;
 						}
 	            		break;
-					case 1:
+					case 3: //el puntero esta en 3, cuando preguntaron sus motivaciones dijeron sus amigos y la aventura
 						gotoxy(1,8);color(10);
 	            		cout<<" [1] Descubrimiento o ciencia   [2]  lealtad o amor   [3] Aventura/libertad";
+	            		gotoxy(1,9); color(15); cout<< " >";
 	            		opcion=leerOpcion(1,3);
 	            		switch(opcion){
 	            			case 1: usuarioVector[7]=2; break;
@@ -493,9 +493,10 @@ void hacerPreguntas() {
 	            			case 3: usuarioVector[7]=4; break;
 						}
 						break;
-	            	case 2:
-	            		gotoxy(1,8);color(10);
+	            	case 5: // el puntero esta en 5, cuando preguntaron sus motivaciones dijeron sueños propios o de si mismo
+	            		gotoxy(1,8);color(10); 
 	            		cout<<" [1] Aventura o libertad   [2]  sueño individual   [3] venganza o poder";
+	            		gotoxy(1,9); color(15); cout<< " >";
 	            		opcion=leerOpcion(1,3);
 	            		switch(opcion){
 	            			case 1: usuarioVector[7]=4; break;
@@ -503,19 +504,12 @@ void hacerPreguntas() {
 	            			case 3: usuarioVector[7]=6; break;
 						}
 	            		break;
-					case 3:	
+					case 7:	//el puntero esta en 5, cuando preguntaron sus motivaciones dijeron que no saben
 						usuarioVector[7]=7; //por si no sabe cual es
 						break;
 				}
-	            /*gotoxy(1,8); color(10); cout << "[1] Su propio sueño o meta  [2] Proteger a otros  [3] Buscar libertad o aventura";
-	            gotoxy(1,9); color(15); cout<< " >";
-	            opcion = leerOpcion(1, 3);
-	            if (opcion == 1 && usuarioVector[7] != 1) usuarioVector[7] = 5;
-	            if (opcion == 2 && usuarioVector[7] != 4) usuarioVector[7] = 1;
-	            if (opcion == 3 && usuarioVector[7] != 5) usuarioVector[7] = 4;
-	            break;*/
 	
-	        case 1://Calibrar Bondad
+	        case 1://PREGUNTA: Calibrar Bondad
 	        	system("cls");
 	            dibujarlogo();
 	            gotoxy(1,7); color(2); cout << "¿El personaje ha matado o robado a alguien?";
@@ -526,14 +520,14 @@ void hacerPreguntas() {
 	            if (opcion == 2 && usuarioVector[6] < 6) usuarioVector[6] += 1;
 	            break;
 	
-	        case 2://Calibrar Personalidad
+	        case 2://PREGUNTA: Calibrar Personalidad
 	        	system("cls");
 	            dibujarlogo();
 	            //[5] -> Personalidad (0=Miedoso, 1=Alegre, 2=Tranquilo, 3=serio, 4=Frio, 5=Agresivo) 
 	            gotoxy(1,7); color(2); cout << "¿Como suele reaccionar ante los problemas?";
 	            gotoxy(1,8); color(10); cout << "[1] Se altera  [2] Es optimista [3] Mantiene la calma [4] Analiza antes de actuar";
 	            gotoxy(1,9); color(15); cout<< " >";
-	            opcion = leerOpcion(1, 3);
+	            opcion = leerOpcion(1, 4);
 	            if (opcion == 1) {
 	                int aleatorio = rand() % 2; // si se altera, alazar entre miedoso y agresivo
 	                if (aleatorio == 0) usuarioVector[5] = 0; 
@@ -543,7 +537,7 @@ void hacerPreguntas() {
 	             else if (opcion == 4) usuarioVector[5] = 3;
 	            break;
 	
-	        case 3://Sexo
+	        case 3://PREGUNTA: Sexo
 	        	system("cls");
 	            dibujarlogo();
 	            gotoxy(1,7); color(2); cout << "¿Es hombre o mujer?";
@@ -554,7 +548,7 @@ void hacerPreguntas() {
 	            else usuarioVector[10] = 2; 
 	            break;
 	
-	        case 4://Calibrar Bondad
+	        case 4://PREGUNTA: Calibrar Bondad
 	        	system("cls");
 	            dibujarlogo();
 	            gotoxy(1,7); color(2); cout << "¿Tiende a ser mas cruel o más generoso?";
@@ -580,13 +574,14 @@ int main() {
 
     // Calcular distancias
     vector<pair<double,string>> distancias;
-    for (auto& p : basePersonajes) {
+    for (auto& p : basePersonajes) { //ciclo de rango del vector personaje (auto& saca referecnais por cada elemento, basePersonajes el elemento en cuestion y p es la variable de la iteracion,
         double d = distanciaEuclidiana(usuarioVector, p.vector);
         distancias.push_back({d, p.nombre});
     }
 
     // Ordenar
     sort(distancias.begin(), distancias.end(),
+    //ordena tomando la dupla de cada personaje ubicando uno menor antes de uno mayor y lo hacen por referencia
     [](const pair<double,string>& a, const pair<double,string>& b) {
         return a.first < b.first;
 	    }
@@ -595,9 +590,9 @@ int main() {
 
     mostrarTop3(distancias);
 	color(3);
-    gotoxy(3,24);cout 			<< "Gracias por jugar al sistema experto de One Piece ";
-    gotoxy(3,25);color(15); cout<< "=================================================";
-    gotoxy(1,26);color(8); cout<<"               Programa hecho por muñoz";
+    gotoxy(3,23);cout 			<< "Gracias por jugar al sistema experto de One Piece ";
+    gotoxy(3,24);color(15); cout<< "=================================================";
+    gotoxy(1,25);color(8); cout<<"               Programa hecho por muñoz";
     return 0;
 }
 
