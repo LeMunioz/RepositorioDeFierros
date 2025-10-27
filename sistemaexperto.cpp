@@ -102,7 +102,7 @@ int leerOpcion(int min, int max) {
 
 void inicializarBase() {
     basePersonajes.reserve(120);   
-			/* 
+	/* 
 	Dimensiones: 
 	0 -> Rol (0 = Pirata, 1 = Marine, 	2 = Revolucionario, 3 = Civil)
 	1 -> Origen (0 = Humano, 1 = Gyojin, 2 = Gigante, 3 = Tontata, 4 = Animal) 
@@ -111,9 +111,9 @@ void inicializarBase() {
 	4 -> Fruta (0 = No tiene, 1 = Zoan, 2 = Logia, 3 = Paramecia) 
 	5 -> Personalidad (0 = Miedoso, 1 = Alegre, 2 = Tranquilo, 3= serio, 4 = Frio, 5 = Agresivo) 
 	6 -> Bondad (0 = Muy malo, 3 = Neutral, 6 = Muy bueno) 
-	7 -> Motivacion (0 = Justicia/deber, 1 = Proteccion/ayudar a otros, 2= conocimiento/ciencia, 3 = amistad o amor, 
+	7 -> Motivacion (0 = Justicia/deber, 1 = Proteccion/ayudar a otros, 2= conocimiento/ciencia, 3 = lealtad o amor, 
 				     4 =Aventura/libertad, 5 = sueño individual, 6 = Venganza/poder, 7 = Sin motivacion clara) 
-	8 -> Color de pelo (0=Negro,1=Cafe,2=verde,3=Rojo/Rosa,4=Azul,5=Naranja,6=Rubio,7=Blanco/Gris,8=Calvo) 
+	8 -> Color de pelo (0=Negro,1=Cafe,2=verde,3=Rojo/Rosa,4=Azul,5=Naranja,6=Rubio,7=Blanco/Gris,8=Calvo,9=rosa) 
 	9 -> Sexo (0 = hombre, 2 = mujer)
 	*/
     //SOMBREROS DE PAJA
@@ -137,7 +137,7 @@ void inicializarBase() {
 	basePersonajes.push_back({"Fujitora",		{1,0,54,2,3,2,6,0,0,0}});
 	basePersonajes.push_back({"Smoker",			{1,0,36,2,2,4,5,0,7,0}});
 	basePersonajes.push_back({"Tashigi",	    {1,0,23,0,0,1,6,0,1,2}});
-	basePersonajes.push_back({"Koby",			{1,0,18,3,0,0,6,1,3,0}});
+	basePersonajes.push_back({"Koby",			{1,0,18,3,0,0,6,1,9,0}});
 	basePersonajes.push_back({"Helmepo",		{1,0,22,3,0,0,3,0,7,0}});
 	basePersonajes.push_back({"John Giant",     {1,2,63,3,0,3,3,0,7,0}});
 	    
@@ -159,7 +159,7 @@ void inicializarBase() {
     basePersonajes.push_back({"Edward Newgate (Barba Blanca)",{0,0,72,2,3,5,6,1,7,0}});
     basePersonajes.push_back({"Marco"				,{0,0,45,2,1,2,4,7,6,0}});
     basePersonajes.push_back({"Portgas D. Ace"		,{0,0,20,2,2,1,3,4,0,0}});
-    basePersonajes.push_back({"Charlote Linlin (Big Mom)",{0,0,68,2,3,5,1,6,3,2}});
+    basePersonajes.push_back({"Charlote Linlin (Big Mom)",{0,0,68,2,3,5,1,6,9,2}});
     basePersonajes.push_back({"Charlotte Katakuri",  {0,0,48,2,3,3,4,1,7,0}});
     basePersonajes.push_back({"Shanks"				,{0,0,39,3,0,1,4,7,3,0}});
     basePersonajes.push_back({"Ben Beckman"			,{0,0,50,0,0,3,3,7,7,0}});
@@ -169,7 +169,7 @@ void inicializarBase() {
 	// PERSONAJES SECUNDARIOS	
 	// East blue
 	basePersonajes.push_back({"Alvida",			     {0,0,27,1,3,5,0,6,0,2}});
-	basePersonajes.push_back({"Rika (la niña de las bolas de arroz)",{3,0,17,0,0,1,6,1,1,2}});
+	basePersonajes.push_back({"Rika (la niña de las bolas de arroz)",{3,0,8,0,0,1,6,1,1,2}});
 	basePersonajes.push_back({"Shushu",              {3,4,14,0,0,5,5,1,7,0}});
 	basePersonajes.push_back({"Jango",	  	  	  	 {1,0,29,0,0,5,1,7,1,0}});
 	basePersonajes.push_back({"Kaya",                {3,0,17,0,0,2,5,2,6,2}});
@@ -180,7 +180,7 @@ void inicializarBase() {
 	basePersonajes.push_back({"Señor Genn",          {3,0,44,0,0,3,5,1,0,0}});
 	basePersonajes.push_back({"Arlong",              {0,1,41,0,0,5,1,6,0,0}});
 	basePersonajes.push_back({"Bellmere",  		     {3,0,30,0,0,1,6,1,3,2}});
-	basePersonajes.push_back({"Nokijo",		         {3,0,22,0,0,2,5,7,4,2}});
+	basePersonajes.push_back({"Nojiko",		         {3,0,22,0,0,2,5,7,4,2}});
 	// Alabasta
 	basePersonajes.push_back({"Laboon",              {3,4,54,0,0,1,4,3,8,0}});
 	basePersonajes.push_back({"Igaram",			     {3,2,50,0,0,1,6,1,6,0}});
@@ -193,10 +193,12 @@ void inicializarBase() {
 	basePersonajes.push_back({"Mr. 2 Bon Clay",      {0,0,30,1,3,1,5,3,0,0}});
 	basePersonajes.push_back({"Pell",	 	  	     {3,0,27,1,1,3,5,1,1,0}});
 	basePersonajes.push_back({"Pestañas",			 {3,4,20,0,0,1,3,7,1,0}});
+	basePersonajes.push_back({"Hina",			     {1,0,32,1,3,3,3,0,9,2}});
 	// Skypea	
 	basePersonajes.push_back({"Bellamy",             {0,0,24,2,3,5,2,6,6,0}});
 	basePersonajes.push_back({"Masira (los simios)", {3,4,25,0,0,1,6,3,1,0}});
 	basePersonajes.push_back({"Mont Blanc Cricket",  {3,0,41,0,0,1,6,2,6,0}});
+	basePersonajes.push_back({"South Bird",			 {3,4,5,0,0,5,3,4,2,0}});
 	basePersonajes.push_back({"Enel",                {3,0,39,2,2,4,0,6,6,0}});
 	basePersonajes.push_back({"Mont Blanc Noland",   {3,0,39,0,0,1,6,2,2,0}});
 	basePersonajes.push_back({"Kalgara",             {3,0,40,0,0,5,4,0,3,0}});
@@ -204,6 +206,8 @@ void inicializarBase() {
 	basePersonajes.push_back({"Aisa",				 {3,0,11,0,0,5,5,5,1,2}});	
 	basePersonajes.push_back({"Connis",				 {3,0,22,0,0,2,6,7,5,2}});	
 	// Water 7
+	basePersonajes.push_back({"Capitan Shepherd",	 {1,0,30,0,0,3,3,0,1,0}});
+	basePersonajes.push_back({"Condoriano",			 {1,0,25,0,0,1,6,3,1,0}});
 	basePersonajes.push_back({"Foxy",                {0,0,38,1,3,0,1,6,0,0}});
 	basePersonajes.push_back({"Rob Lucci",           {3,0,30,2,1,5,1,7,0,0}});
 	basePersonajes.push_back({"Kaku",                {3,0,25,2,1,2,3,7,6,0}});
@@ -215,41 +219,53 @@ void inicializarBase() {
 	basePersonajes.push_back({"Chimmey",             {3,0,10,0,0,1,5,3,2,2}});
 	basePersonajes.push_back({"Gonbe",	             {3,4,8,0,0,1,5,7,4,0}});
 	// Thriller bark
-	basePersonajes.push_back({"Perona",              {3,0,25,1,3,5,3,7,3,2}});
+	basePersonajes.push_back({"Perona",              {3,0,25,1,3,5,3,7,9,2}});
 	basePersonajes.push_back({"Dr. Hogback",         {3,0,45,0,0,4,0,2,4,0}});
 	// Sabaody/Impel down
 	basePersonajes.push_back({"Duval",               {0,0,32,0,0,1,4,6,6,0}});
 	basePersonajes.push_back({"Trafalgar D. Water Law",{0,0,26,2,3,4,4,6,0,0}});
 	basePersonajes.push_back({"Bepo",              	 {0,4,22,3,0,1,6,3,7,0}});
 	basePersonajes.push_back({"Eustass Kid",         {0,0,27,2,3,5,3,7,3,0}});
-	basePersonajes.push_back({"Jewelry Bonney",      {0,0,22,1,3,5,3,3,3,2}});
+	basePersonajes.push_back({"Killer",				 {0,0,25,3,0,3,3,3,6,0}});
+	basePersonajes.push_back({"Jewelry Bonney",      {0,0,22,1,3,5,3,3,9,2}});
 	basePersonajes.push_back({"Sentomaru",           {1,0,34,3,0,3,3,0,0,0}});
+	basePersonajes.push_back({"Momonga",			 {1,0,50,3,0,3,3,0,0,0}});
+	basePersonajes.push_back({"Boa Marigold",		 {0,0,30,1,1,5,3,3,0,2}});
+	basePersonajes.push_back({"Boa Sandersonia",	 {0,0,28,1,1,5,3,3,2,2}});
 	basePersonajes.push_back({"Magellan",            {1,0,47,1,2,3,4,0,0,0}});
 	basePersonajes.push_back({"Dadan", 		         {3,0,53,0,0,5,5,1,5,2}});
+	basePersonajes.push_back({"Tsuru",				 {1,0,63,1,3,4,6,0,7,2}});
 	// Fishmen island
 	basePersonajes.push_back({"Caribou",             {0,0,30,1,3,5,0,6,7,0}});
-	basePersonajes.push_back({"Shirahoshi",          {3,1,16,0,0,0,6,1,3,2}});
+	basePersonajes.push_back({"Shirahoshi",          {3,1,16,0,0,0,6,1,9,2}});
 	basePersonajes.push_back({"Hody Jones",          {0,1,30,2,0,5,0,6,0,0}});
 	basePersonajes.push_back({"Fisher Tiger",        {0,1,48,2,0,4,6,1,3,0}});
 	basePersonajes.push_back({"Camie",               {3,1,18,0,0,1,6,3,3,2}});
 	basePersonajes.push_back({"Hatchan",             {0,1,38,0,0,1,4,1,0,0}});
 	// Dressrosa
 	basePersonajes.push_back({"Vergo",               {1,0,41,2,0,4,1,0,0,0}});
+	basePersonajes.push_back({"Caesar Clown",		 {3,0,40,1,2,4,0,2,3,0}});
 	basePersonajes.push_back({"Senor Pink",          {0,0,42,1,3,4,3,3,0,0}});
 	basePersonajes.push_back({"Leo",                 {3,3,25,0,0,2,6,1,1,0}});   // Líder tontatta, leal, protector
 	basePersonajes.push_back({"Mansherry",           {3,3,20,0,0,1,6,1,3,2}});   // Princesa curandera, tierna y compasiva
 	basePersonajes.push_back({"Hajrudin",            {0,2,81,0,0,5,3,4,7,0}});
 	basePersonajes.push_back({"Bartolomeo",          {0,0,24,1,3,1,5,3,2,0}});
+	basePersonajes.push_back({"Koala",				 {2,0,23,3,0,1,6,1,5,2}});
 	// Whole kake
+	basePersonajes.push_back({"Carrot",			     {0,4,15,0,0,1,6,4,6,2}});
+	basePersonajes.push_back({"Inuarashi",			 {3,4,50,3,0,2,6,1,7,0}});
+	basePersonajes.push_back({"Nekomamushi",	 	 {3,4,50,3,0,1,6,1,5,0}});
 	basePersonajes.push_back({"Charlotte Pudding",   {3,0,16,1,3,2,5,3,3,2}});
 	basePersonajes.push_back({"Vinsmoke Judge",      {1,0,56,2,0,4,1,0,6,0}});
-	basePersonajes.push_back({"Vinsmoke Reiju.",	 {3,0,30,1,3,2,5,7,3,2}});
+	basePersonajes.push_back({"Vinsmoke Reiju.",	 {3,0,30,1,3,2,5,7,9,2}});
 	// Wano
 	basePersonajes.push_back({"Yamato",              {0,0,28,2,1,1,5,4,6,0}});
 	basePersonajes.push_back({"Kin'emon",            {0,0,36,2,0,3,4,0,0,0}});
 	basePersonajes.push_back({"Kozuki Oden",         {0,0,39,2,0,5,6,4,0,0}});
 	basePersonajes.push_back({"Kanjuro",             {0,0,39,1,0,4,0,6,0,0}});
 	basePersonajes.push_back({"Momonosuke",          {3,0,8,0,0,1,5,4,0,0}});
+	basePersonajes.push_back({"King",				 {0,4,47,1,1,4,0,6,7,0}});
+	basePersonajes.push_back({"Queen",				 {0,0,48,1,1,1,0,6,6,0}});
 	// Egghead
 	basePersonajes.push_back({"Vegapunk",            {1,0,65,2,0,3,5,2,7,0}});
 	
@@ -258,12 +274,18 @@ void inicializarBase() {
 	basePersonajes.push_back({"Silvers Rayleigh",    {0,0,78,3,0,3,3,4,7,0}}); 
 	basePersonajes.push_back({"Scopper Gaban",       {0,0,80,3,0,3,3,4,0,0}}); 
 	basePersonajes.push_back({"Crocus",              {3,0,66,0,0,2,6,2,7,0}});
+	basePersonajes.push_back({"Saint Jaygarcia Saturn",{3,0,80,3,0,4,0,6,7,0}});
+	basePersonajes.push_back({"Saint Marcus Mars",	 {3,0,75,3,0,4,0,6,7,0}});
+	basePersonajes.push_back({"Saint Topman Warcury",{3,0,82,3,0,4,0,6,7,0}});
+	basePersonajes.push_back({"Saint Ethanbaron V. Nusjuro",{3,0,76,3,0,4,0,6,7,0}});
+	basePersonajes.push_back({"Saint Shepherd Ju Peter",{3,0,79,3,0,4,0,6,7,0}});
+
 	basePersonajes.push_back({"Imu", 	             {3,0,139,2,3,5,0,6,0,1}});	
 }
 
 
 // ----------------------------------------------------------------
-// ----- PREGUNTAS ------
+// ----- LOGO  ------
 // ----------------------------------------------------------------
 void dibujarlogo(){
 	color(12);
@@ -282,6 +304,11 @@ void dibujarlogo(){
 		color(3); 
 		gotoxy(98,i);cout<<"|";
 	}
+	//contorno izquierdo
+	for(int i=7; i <26; i++){
+		color(3); 
+		gotoxy(0,i);cout<<"|";
+	}
 	//contorno inferior
 	for(int i=0; i <98; i++){
 		color(3);
@@ -290,6 +317,9 @@ void dibujarlogo(){
 	color(15);  	                                                               	
 }
 
+// ----------------------------------------------------------------
+// ----- PREGUNTAS ------
+// ----------------------------------------------------------------
 void hacerPreguntas() {
     int opcion = 0;
 
@@ -350,35 +380,81 @@ void hacerPreguntas() {
     gotoxy(1,8); color(10); cout << "[0] Malo  [1] Neutral  [2] Bueno";
     gotoxy(1,9); color(15); cout<< " >";
     opcion = leerOpcion(0, 2);
-
     switch (opcion) {
         case 0: usuarioVector[6] = 1; break;
         case 1: usuarioVector[6] = 3; break;
         case 2: usuarioVector[6] = 5; break;
     } 
+    system("cls");
 				      
     // 7. Motivación
     dibujarlogo();
+    //[7] -> Motivacion (0=Justicia/deber, 1=Proteccion/ayudar, 2=conocimiento/ciencia, 3=lealtad o amor, 4=Aventura/libertad, 5=sueño individual, 6=Venganza/poder, 7=Sin motivacion clara) 
     gotoxy(1,7); color(2); cout << "7?? ¿Que lo motiva principalmente?";
     gotoxy(1,8); color(10);
-    cout << "[0] Justicia/deber  [1] Proteccion/ayuda a otros  [2] Conocimiento [3] Cumplir con amistad/amor\n";
-    gotoxy(1,9); color(10);
-    cout << "      [4] libertad o aventura  [5] Cumplir una meta personal, [6] venganza o poder [7] no se";
-    gotoxy(1,10);color(15); cout << "> ";
-    usuarioVector[7] = leerOpcion(0, 7);
+    cout << "[0] la moral/deber  [1] sus amigos y la aventura  [2] sueños propios o de si mismo   [3] no se";
+    gotoxy(1,9);color(15); cout << "> ";
+    opcion=leerOpcion(0, 3);
+    switch(opcion){
+    	case 0: usuarioVector[7]=0; break;
+    	case 1: usuarioVector[7]=3; break;
+    	case 2: usuarioVector[7]=5; break;
+    	case 3: usuarioVector[7]=7; break;
+	}
     system("cls");
 
     // 8. Color de pelos
     dibujarlogo();
-    gotoxy(1,7); color(2); cout << "8?? ¿De que color es su cabello?";
+    gotoxy(1,7); color(2); cout << "8?? Su cabello es oscuro o claro?";
     gotoxy(1,8); color(10);
-    cout << "[0] Negro [1] Café [2] Verde [3] Rojo/Rosa [4] Azul [5] Naranja [6] Rubio [7] Blanco/Gris [8] Calvo";
+    cout << "[1] oscuro [2] claro [3] no tiene";
     gotoxy(1,9); color(15); cout<< " >";
-    usuarioVector[8] = leerOpcion(0, 8);
+    opcion = leerOpcion(1,3);
+    switch(opcion){
+    	case 1: usuarioVector[8]=1; break;
+    	case 2: usuarioVector[8]=6; break;
+    	case 3: usuarioVector[8]=8; break;
+	}
+    system("cls");
+    
+    if (usuarioVector[8] == 6) {
+        system("cls");
+        dibujarlogo();
+        gotoxy(1,7); color(2); cout << "¿De que color es su cabello?";
+        gotoxy(1,8); color(10); cout << "[1] Blanco/Gris [2] Rubio [3] Naranja [4] Rosa [5] Azul [6] Rojo";
+        gotoxy(1,9); color(15); cout<< " >";
+        opcion = leerOpcion(1, 5);
+        switch (opcion){
+        	case 1: usuarioVector[8]=7; break;
+        	case 2: usuarioVector[8]=6; break;
+        	case 3: usuarioVector[8]=5; break;
+        	case 4: usuarioVector[8]=9; break;
+        	case 5: usuarioVector[8]=4; break;
+        	case 6: usuarioVector[8]=3; break;
+		}
+	}else if (usuarioVector[8] == 1){
+		system("cls");
+        dibujarlogo();
+        gotoxy(1,7); color(2); cout << "¿De que color es su cabello?";
+        gotoxy(1,8); color(10); cout << "[1] Negro [2] Cafe [3] Verde [4] Rojo [5] Azul";
+        gotoxy(1,9); color(15); cout<< " >";
+        opcion = leerOpcion(1, 5);
+        switch (opcion){
+        	case 1: usuarioVector[8]=0; break;
+        	case 2: usuarioVector[8]=1; break;
+        	case 3: usuarioVector[8]=2; break;
+        	case 4: usuarioVector[8]=3; break;
+        	case 5: usuarioVector[8]=4; break;
+		}		
+    } else {
+        usuarioVector[8] = 8;
+    }
     system("cls");
 
 	// 9. Preguntas aleatorias
 	srand(time(0));
+	
+	// PREGUNTAS ALEATORIAS
 	
 	// número de preguntas que se harán (1 a 3)
 	int numPreguntas = 1 + rand() % 3; 
@@ -392,19 +468,54 @@ void hacerPreguntas() {
 		gotoxy(1,19);color(8);cout<<numPreguntas;
 	    int aleatoria = indices[i];
 	    switch (aleatoria) {
-	        case 0:
+	        case 0://Calibrar su motivacion/sueño
 	        	system("cls");
 	            dibujarlogo();
 	            gotoxy(1,7); color(2); cout << "¿Que impulsa más sus acciones?";
-	            gotoxy(1,8); color(10); cout << "[1] Su propio sueño o meta  [2] Proteger a otros  [3] Buscar libertad o aventura";
+	            switch (usuarioVector[7]){
+	            	case 0:
+	            		gotoxy(1,8);color(10);
+	            		cout<<" [1] la justicia y el deber   [2]  Proteccion/ ayudar a los demas   [3] Descubrimiento o ciencia";
+	            		opcion=leerOpcion(1,3);
+	            		switch(opcion){
+	            			case 1: usuarioVector[7]=0; break;
+	            			case 2: usuarioVector[7]=1; break;
+	            			case 3: usuarioVector[7]=2; break;
+						}
+	            		break;
+					case 1:
+						gotoxy(1,8);color(10);
+	            		cout<<" [1] Descubrimiento o ciencia   [2]  lealtad o amor   [3] Aventura/libertad";
+	            		opcion=leerOpcion(1,3);
+	            		switch(opcion){
+	            			case 1: usuarioVector[7]=2; break;
+	            			case 2: usuarioVector[7]=3; break;
+	            			case 3: usuarioVector[7]=4; break;
+						}
+						break;
+	            	case 2:
+	            		gotoxy(1,8);color(10);
+	            		cout<<" [1] Aventura o libertad   [2]  sueño individual   [3] venganza o poder";
+	            		opcion=leerOpcion(1,3);
+	            		switch(opcion){
+	            			case 1: usuarioVector[7]=4; break;
+	            			case 2: usuarioVector[7]=5; break;
+	            			case 3: usuarioVector[7]=6; break;
+						}
+	            		break;
+					case 3:	
+						usuarioVector[7]=7; //por si no sabe cual es
+						break;
+				}
+	            /*gotoxy(1,8); color(10); cout << "[1] Su propio sueño o meta  [2] Proteger a otros  [3] Buscar libertad o aventura";
 	            gotoxy(1,9); color(15); cout<< " >";
 	            opcion = leerOpcion(1, 3);
 	            if (opcion == 1 && usuarioVector[7] != 1) usuarioVector[7] = 5;
 	            if (opcion == 2 && usuarioVector[7] != 4) usuarioVector[7] = 1;
 	            if (opcion == 3 && usuarioVector[7] != 5) usuarioVector[7] = 4;
-	            break;
+	            break;*/
 	
-	        case 1:
+	        case 1://Calibrar Bondad
 	        	system("cls");
 	            dibujarlogo();
 	            gotoxy(1,7); color(2); cout << "¿El personaje ha matado o robado a alguien?";
@@ -415,22 +526,24 @@ void hacerPreguntas() {
 	            if (opcion == 2 && usuarioVector[6] < 6) usuarioVector[6] += 1;
 	            break;
 	
-	        case 2:
+	        case 2://Calibrar Personalidad
 	        	system("cls");
 	            dibujarlogo();
+	            //[5] -> Personalidad (0=Miedoso, 1=Alegre, 2=Tranquilo, 3=serio, 4=Frio, 5=Agresivo) 
 	            gotoxy(1,7); color(2); cout << "¿Como suele reaccionar ante los problemas?";
-	            gotoxy(1,8); color(10); cout << "[1] Se altera  [2] Mantiene la calma  [3] Analiza antes de actuar";
+	            gotoxy(1,8); color(10); cout << "[1] Se altera  [2] Es optimista [3] Mantiene la calma [4] Analiza antes de actuar";
 	            gotoxy(1,9); color(15); cout<< " >";
 	            opcion = leerOpcion(1, 3);
 	            if (opcion == 1) {
-	                int aleatorio = rand() % 2;
+	                int aleatorio = rand() % 2; // si se altera, alazar entre miedoso y agresivo
 	                if (aleatorio == 0) usuarioVector[5] = 0; 
 	                else usuarioVector[5] = 5;                
-	            } else if (opcion == 2) usuarioVector[5] = 2;
-	            else if (opcion == 3) usuarioVector[5] = 3;
+	            }else if (opcion == 2) usuarioVector[5] = 1;
+	             else if (opcion == 3) usuarioVector[5] = 2;
+	             else if (opcion == 4) usuarioVector[5] = 3;
 	            break;
 	
-	        case 3:
+	        case 3://Sexo
 	        	system("cls");
 	            dibujarlogo();
 	            gotoxy(1,7); color(2); cout << "¿Es hombre o mujer?";
@@ -441,7 +554,7 @@ void hacerPreguntas() {
 	            else usuarioVector[10] = 2; 
 	            break;
 	
-	        case 4:
+	        case 4://Calibrar Bondad
 	        	system("cls");
 	            dibujarlogo();
 	            gotoxy(1,7); color(2); cout << "¿Tiende a ser mas cruel o más generoso?";
