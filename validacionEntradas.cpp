@@ -1,0 +1,29 @@
+#include <iostream>
+#include <vector>
+#include <cctype>
+using namespace std;
+
+int leerOpcion(int min, int max) {
+    int opcion;
+    while (true) {
+        cin >> opcion;
+        if (!cin.fail() && opcion >= min && opcion <= max) break;
+        cin.clear();
+        cin.ignore(10000, '\n');
+        cout << "Entrada inválida. Intenta nuevamente: ";
+    }
+    return opcion;
+}
+
+char leerCharOpcional(vector<char> opciones) {
+    char c;
+    while (true) {
+        cin >> c;
+        c = tolower(c);
+        for (auto o : opciones) {
+            if (c == o) return c;
+        }
+        cout << "Entrada inválida. Intenta nuevamente: ";
+    }
+}
+
