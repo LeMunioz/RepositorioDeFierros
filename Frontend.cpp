@@ -14,6 +14,9 @@ imprimir en colores en consola - - - - 1
 imprimir con cordenadas en consola - - 2
 validacion de entrada de datos - - - - 3
 menus interactivos - - - - - - - - - - 4
+botones y cajas interactivos - - - - - 5
+tamaño de consolas - - - - - - - - - - 6
+animacion de textos- - - - - - - - - - 7
 
 
 1) IMPRIMIR EN COLORES EN CONSOLA
@@ -77,6 +80,16 @@ menus interactivos - - - - - - - - - - 4
     Sintaxis básica:
         Menu miMenu({"Opcion 1", "Opcion 2", ... "OpcionN"}MenuTipo:"tipo");
         int elegido = miMenu.mostrar();
+
+5) BOTONES INTERACTIVOS
+
+
+6) CONSOLA DE TAMAÑO   
+
+
+7) ANIMACION DE TEXTOS
+
+     
 */
 
 
@@ -216,7 +229,7 @@ public:
         }
     }
 
-    // ----------- AQUI OCURRE LA MAGIA -----------
+    // ----------- AQUI OCURRE LAS COSAS -----------
     int mostrar() {
         const int ENTER = 13;
         const int PREFIX = 224;
@@ -272,3 +285,81 @@ public:
         }
     }
 };
+
+//  ============================ //
+//  BOTONES Y CAJAS INTERACTIVOS //
+//  ============================ //
+void drawBox(int x, int y, int w, int h) {
+    // Esquinas
+    gotoxy(x, y);         cout << char(218);
+    gotoxy(x + w, y);     cout << char(191);
+    gotoxy(x, y + h);     cout << char(192);
+    gotoxy(x + w, y + h); cout << char(217);
+
+    // Horizontales
+    for (int i = 1; i < w; i++) {
+        gotoxy(x + i, y);     cout << char(196);
+        gotoxy(x + i, y + h); cout << char(196);
+    }
+
+    // Verticales
+    for (int i = 1; i < h; i++) {
+        gotoxy(x, y + i);     cout << char(179);
+        gotoxy(x + w, y + i); cout << char(179);
+    }
+}
+
+// -- BOTONES -- //
+void drawButton(int x, int y, string texto, bool activo) {
+    int w = texto.size() + 4;
+
+    color(activo ? 10 : 15);
+    drawBox(x, y, w, 2);
+
+    gotoxy(x + 2, y + 1);
+    cout << texto;
+
+    color(15);
+}
+
+
+//  ================= //
+//  TAMAÑO DE CONSOLA //
+//  ================= //
+void setConsoleSize(int cols, int rows) {
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    // Ajustar buffer
+    COORD bufferSize = { (SHORT)cols, (SHORT)rows };
+    SetConsoleScreenBufferSize(hOut, bufferSize);
+
+    // Ajustar ventana
+    SMALL_RECT windowSize = { 0, 0, (SHORT)(cols - 1), (SHORT)(rows - 1) };
+    SetConsoleWindowInfo(hOut, TRUE, &windowSize);
+}
+
+//  ==================== //
+//  ANIMACIONES DE TEXTO //
+//  ==================== //
+// Escribir tipo maquina de texto
+void escribirAnimado(int x, int y, string texto, int delayMs = 30) {
+    gotoxy(x, y);
+    for (char c : texto) {
+        cout << c;
+        Sleep(delayMs);
+    }
+}
+
+//fade in usando colores (de negro a blanco)
+void textoFade(int x, int y, string texto) {
+    int colores[] = {8, 7, 15};
+    for (int c : colores) {
+        color(c);
+        gotoxy(x, y);
+        cout << texto;
+        Sleep(80);
+    }
+    color(15);
+}
+
+
